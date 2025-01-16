@@ -7,3 +7,7 @@ services:
     pullRequestPreviewsEnabled: true
     domains:
       - bayes.nathanarthur.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
