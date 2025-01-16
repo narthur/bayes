@@ -37,6 +37,37 @@
     newObservation = { description: '', probabilityGivenTrue: 0.5, probabilityGivenFalse: 0.5 };
   }
 
+  function deleteObservation(observationId: string) {
+    hypothesis.observations = hypothesis.observations.filter(o => o.id !== observationId);
+    
+    // Update in storage
+    const hypotheses = loadHypotheses();
+    const updatedHypotheses = hypotheses.map(h => 
+      h.id === hypothesis.id ? hypothesis : h
+    );
+    saveHypotheses(updatedHypotheses);
+  }
+
+  function editObservation(observation: Observation) {
+    const index = hypothesis.observations.findIndex(o => o.id === observation.id);
+    if (index === -1) return;
+
+    hypothesis.observations[index] = {
+      ...observation,
+      timestamp: Date.now() // Update timestamp when edited
+    };
+    hypothesis.observations = [...hypothesis.observations]; // Trigger reactivity
+    
+    // Update in storage
+    const hypotheses = loadHypotheses();
+    const updatedHypotheses = hypotheses.map(h => 
+      h.id === hypothesis.id ? hypothesis : h
+    );
+    saveHypotheses(updatedHypotheses);
+  }
+
+  let editingObservation: Observation | null = null;
+
   function formatProbability(prob: number): string {
     return (prob * 100).toFixed(1) + '%';
   }
@@ -215,12 +246,93 @@
         <div class="space-y-4">
           {#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}
             <div class="p-4 bg-slate-50 rounded-md border border-slate-200">
-              <p class="text-slate-800 font-medium">{observation.description}</p>
-              <div class="mt-2 flex gap-6 text-sm text-slate-600">
-                <span>If true: {formatProbability(observation.probabilityGivenTrue)}</span>
-                <span>If false: {formatProbability(observation.probabilityGivenFalse)}</span>
-                <span class="text-slate-400">{new Date(observation.timestamp).toLocaleDateString()}</span>
-              </div>
+              {#if editingObservation?.id === observation.id}
+                <div class="space-y-4">
+                  <input
+                    type="text"
+                    bind:value={editingObservation.description}
+                    class="w-full p-2 border border-slate-300 rounded-md"
+                  />
+                  <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                      If hypothesis is true: {formatProbability(editingObservation.probabilityGivenTrue)}
+                    </label>
+                    <input
+                      type="range"
+                      bind:value={editingObservation.probabilityGivenTrue}
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      class="w-full"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                      If hypothesis is false: {formatProbability(editingObservation.probabilityGivenFalse)}
+                    </label>
+                    <input
+                      type="range"
+                      bind:value={editingObservation.probabilityGivenFalse}
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      class="w-full"
+                    />
+                  </div>
+                  <div class="flex gap-2">
+                    <button
+                      on:click={() => {
+                        editObservation(editingObservation);
+                        editingObservation = null;
+                      }}
+                      class="px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700"
+                    >
+                      Save
+                    </button>
+                    <button
+                      on:click={() => editingObservation = null}
+                      class="px-3 py-1 bg-slate-200 text-slate-700 rounded hover:bg-slate-300"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              {:else}
+                <div class="flex justify-between">
+                  <div class="flex-1">
+                    <p class="text-slate-800 font-medium">{observation.description}</p>
+                    <div class="mt-2 flex gap-6 text-sm text-slate-600">
+                      <span>If true: {formatProbability(observation.probabilityGivenTrue)}</span>
+                      <span>If false: {formatProbability(observation.probabilityGivenFalse)}</span>
+                      <span class="text-slate-400">{new Date(observation.timestamp).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  <div class="flex gap-2 ml-4">
+                    <button
+                      on:click={() => editingObservation = { ...observation }}
+                      class="p-1 text-slate-400 hover:text-indigo-600 transition-colors"
+                      title="Edit observation"
+                    >
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                    <button
+                      on:click={() => {
+                        if (confirm('Are you sure you want to delete this observation?')) {
+                          deleteObservation(observation.id);
+                        }
+                      }}
+                      class="p-1 text-slate-400 hover:text-red-600 transition-colors"
+                      title="Delete observation"
+                    >
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              {/if}
             </div>
           {/each}
         </div>
