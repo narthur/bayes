@@ -309,22 +309,23 @@
 			<div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
 				<h2 class="text-2xl font-serif text-slate-700 mb-6">Evidence Timeline</h2>
 				<div class="space-y-4">
-					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}
-						<div class="p-4 bg-slate-50 rounded-md border border-slate-200">
-							{#if editingObservation?.id === observation.id}
-								<div class="space-y-4">
-									<div class="space-y-2">
+					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}<div class="p-6 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors">
+  {#if editingObservation?.id === observation.id}
+    <div class="bg-slate-50/70 rounded-lg border border-slate-200 border-dashed p-4 space-y-4">
+									<div class="space-y-3">
 										<input
 											type="text"
 											bind:value={editingObservation.description}
 											class="w-full p-2 border border-slate-300 rounded-md"
 											placeholder="What did you observe?"
-										/>
-										<AutoResizeTextarea
-											bind:value={editingObservation.notes}
-											className="w-full p-2 border border-slate-300 rounded-md"
-											placeholder="Add notes (supports markdown)..."
-										/>
+										/>                    <div class="space-y-1">
+                      <label class="block text-sm font-medium text-slate-700">Notes</label>
+                      <AutoResizeTextarea
+                        bind:value={editingObservation.notes}
+                        className="w-full p-2 border border-slate-300 rounded-md"
+                        placeholder="Add notes (supports markdown)..."
+                      />
+                    </div>
 									</div>
 									<div>
 										<label class="block text-sm font-medium text-slate-700 mb-1">
@@ -356,30 +357,34 @@
 											class="w-full"
 										/>
 									</div>
-									<div class="flex gap-2">
-										<button
-											on:click={() => {
-												editObservation(editingObservation);
-												editingObservation = null;
-											}}
-											class="px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700"
-										>
-											Save
-										</button>
-										<button
-											on:click={() => (editingObservation = null)}
-											class="px-3 py-1 bg-slate-200 text-slate-700 rounded hover:bg-slate-300"
-										>
-											Cancel
-										</button>
+									<div class="flex items-center justify-between gap-4 pt-2">
+										<div class="text-xs text-slate-500">
+											Supports markdown formatting
+										</div>
+										<div class="flex gap-2">
+											<button
+												on:click={() => {
+													editObservation(editingObservation);
+													editingObservation = null;
+												}}
+												class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-700 shadow-sm"
+											>
+												Save
+											</button>
+											<button
+												on:click={() => (editingObservation = null)}
+												class="px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-slate-900"
+											>
+												Cancel
+											</button>
+										</div>
 									</div>
 								</div>
-							{:else}
-								<div class="flex justify-between gap-4">
-									<div class="flex-1 space-y-3">
-										<div class="flex items-baseline justify-between gap-4">
-											<p class="text-slate-800 font-medium">{observation.description}</p>
-											<div class="flex gap-2 shrink-0">
+							{:else}                <div class="flex justify-between gap-4">
+                  <div class="flex-1 space-y-4">
+                    <div class="flex items-start justify-between gap-4">
+                      <p class="text-slate-800 font-medium leading-snug">{observation.description}</p>
+                      <div class="flex gap-2 shrink-0 pt-0.5">
 												<button
 													on:click={() => (editingObservation = { ...observation })}
 													class="p-1 text-slate-400 hover:text-indigo-600 transition-colors"
@@ -423,9 +428,7 @@
 													</svg>
 												</button>
 											</div>
-										</div>
-
-										<div class="flex gap-6 text-sm text-slate-600">
+										</div>                    <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-600">
 											<div class="flex items-center gap-2">
 												<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 													<path
@@ -462,10 +465,7 @@
 											</div>
 										</div>
 
-										{#if observation.notes}
-											<div
-												class="prose prose-sm prose-slate max-w-none bg-slate-50 rounded-md p-3 border border-slate-200"
-											>
+										{#if observation.notes}                      <div class="prose prose-sm prose-slate max-w-none bg-slate-50/50 rounded-md p-3 border border-slate-100">
 												{@html marked(observation.notes)}
 											</div>
 										{/if}
