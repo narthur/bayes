@@ -150,7 +150,7 @@
                     <h3 class="text-xl font-medium text-slate-800 group-hover:text-indigo-600 transition-colors mb-1 truncate">
                       {hypothesis.name}
                     </h3>
-                    <p class="text-slate-600 text-sm line-clamp-2">{hypothesis.description}</p>
+                    <p class="text-slate-600 text-sm whitespace-pre-line">{hypothesis.description}</p>
                   </div>
                   <div class="ml-6 flex items-center gap-8">
                     <div class="text-center">
