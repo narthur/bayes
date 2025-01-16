@@ -3,7 +3,7 @@ services:
     name: bayes
     runtime: static
     buildCommand: pnpm run build
-    staticPublishPath: ./.svelte-kit
+    staticPublishPath: ./build
     pullRequestPreviewsEnabled: true
     domains:
       - bayes.nathanarthur.com
