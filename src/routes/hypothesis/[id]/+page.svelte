@@ -142,9 +142,11 @@
                 {/if}
               </div>
             {/if}
-            <div class="absolute right-0 top-0 hidden group-hover:block text-xs text-slate-400">
-              Click to edit
-            </div>
+            {#if !editingDescription}
+              <div class="absolute right-0 top-0 hidden group-hover:block text-xs text-slate-400">
+                Click to edit
+              </div>
+            {/if}
           </div>
         </div>
       </div>
