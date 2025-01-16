@@ -40,6 +40,14 @@
   function formatProbability(prob: number): string {
     return (prob * 100).toFixed(1) + '%';
   }
+
+  function saveChanges() {
+    const hypotheses = loadHypotheses();
+    const updatedHypotheses = hypotheses.map(h => 
+      h.id === hypothesis.id ? hypothesis : h
+    );
+    saveHypotheses(updatedHypotheses);
+  }
 </script>
 
 <main class="min-h-screen bg-slate-50 py-8 px-4">
@@ -63,8 +71,32 @@
     </div>
 
     <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-8">
-      <h1 class="text-3xl font-serif text-slate-800 mb-4">{hypothesis.name}</h1>
-      <p class="text-slate-600 mb-6">{hypothesis.description}</p>
+      <div class="flex items-start justify-between mb-6">
+        <div class="flex-1 space-y-4">
+          <div class="relative group">
+            <input
+              type="text"
+              bind:value={hypothesis.name}
+              on:change={saveChanges}
+              class="text-3xl font-serif text-slate-800 w-full bg-transparent hover:bg-slate-50 px-2 py-1 rounded -mx-2 focus:bg-white focus:ring-2 focus:ring-indigo-200 focus:outline-none"
+            />
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 hidden group-hover:block text-xs text-slate-400">
+              Click to edit
+            </div>
+          </div>
+          <div class="relative group">
+            <textarea
+              bind:value={hypothesis.description}
+              on:change={saveChanges}
+              rows="3"
+              class="text-slate-600 w-full bg-transparent hover:bg-slate-50 px-2 py-1 rounded -mx-2 focus:bg-white focus:ring-2 focus:ring-indigo-200 focus:outline-none resize-none"
+            ></textarea>
+            <div class="absolute right-0 top-0 hidden group-hover:block text-xs text-slate-400">
+              Click to edit
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="flex items-center gap-4 text-sm text-slate-500">
         <span>Started at {formatProbability(hypothesis.priorProbability)}</span>
         <span>•</span>
