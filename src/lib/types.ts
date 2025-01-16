@@ -14,4 +14,5 @@ export interface Observation {
   // P(E|¬H) - Probability of seeing this evidence given hypothesis is false
   probabilityGivenFalse: number;
   timestamp: number;
+  notes?: string;
 }

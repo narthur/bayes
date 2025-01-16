@@ -6,20 +6,22 @@
   export let className = '';
   export let autofocus = false;
 
-  function adjustHeight(textarea: HTMLTextAreaElement) {
+  let textarea: HTMLTextAreaElement;
+
+  function adjustHeight(textareaElement: HTMLTextAreaElement) {
     // Add non-breaking space after every newline
-    const contentWithSpaces = textarea.value.replace(/\n/g, '\n\u00a0');
+    const contentWithSpaces = textareaElement.value.replace(/\n/g, '\n\u00a0');
     // Store cursor position
-    const cursorPos = textarea.selectionStart;
+    const cursorPos = textareaElement.selectionStart;
     // Temporarily set value to include spaces for height calculation
-    textarea.value = contentWithSpaces;
+    textareaElement.value = contentWithSpaces;
     // Reset height to auto to get the correct scrollHeight
-    textarea.style.height = 'auto';
+    textareaElement.style.height = 'auto';
     // Set the height to match the content
-    textarea.style.height = textarea.scrollHeight + 'px';
+    textareaElement.style.height = textareaElement.scrollHeight + 'px';
     // Restore original value and cursor position
-    textarea.value = value;
-    textarea.setSelectionRange(cursorPos, cursorPos);
+    textareaElement.value = value;
+    textareaElement.setSelectionRange(cursorPos, cursorPos);
   }
 
   function handleInput(e: Event) {
@@ -27,7 +29,6 @@
   }
 
   onMount(() => {
-    const textarea = document.querySelector('textarea');
     if (textarea) {
       adjustHeight(textarea);
       if (autofocus) {
@@ -38,6 +39,7 @@
 </script>
 
 <textarea
+  bind:this={textarea}
   bind:value
   on:input={handleInput}
   on:change
