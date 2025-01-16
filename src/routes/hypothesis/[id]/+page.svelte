@@ -318,7 +318,7 @@
 				<h2 class="text-2xl font-serif text-slate-700 mb-6">Evidence Timeline</h2>
 				<div class="space-y-4">
 					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}<div
-							class="p-6 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors shadow-sm hover:shadow-md"
+							class="group p-6 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors shadow-sm hover:shadow-md"
 						>
 							{#if editingObservation?.id === observation.id}
 								<div
@@ -410,7 +410,9 @@
 											<p class="text-slate-800 font-medium leading-snug">
 												{observation.description}
 											</p>
-											<div class="flex gap-2 shrink-0 pt-0.5">
+											<div
+												class="flex gap-2 shrink-0 pt-0.5 flex gap-1 opacity-0 group-hover:opacity-100 transition-all"
+											>
 												<button
 													on:click={() => (editingObservation = { ...observation })}
 													class="p-1 text-slate-400 hover:text-indigo-600 transition-colors"
