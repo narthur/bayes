@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import type { Hypothesis } from '$lib/types';
   import { calculatePosteriorProbability } from '$lib/bayes';
-  import { saveHypotheses, loadHypotheses } from '$lib/storage';
+  import { saveHypotheses, loadHypotheses, deleteHypothesis, duplicateHypothesis } from '$lib/storage';
 
   let hypotheses: Hypothesis[] = [];
   let newHypothesis = {
@@ -39,12 +39,66 @@
 
 <main class="min-h-screen bg-slate-50 py-8 px-4">
   <div class="max-w-4xl mx-auto">
-    <h1 class="text-4xl font-serif text-slate-800 mb-4 text-center">Bayesian Inference Tool</h1>
-    <p class="text-slate-600 text-center mb-4 font-light">A systematic approach to updating beliefs based on evidence</p>
-    <p class="text-sm text-slate-500 text-center mb-12 max-w-2xl mx-auto">
-      Track your hypotheses and update their probabilities as you gather evidence.
-      Start by creating a hypothesis below or explore your existing ones.
-    </p>
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-serif text-slate-800 mb-4">Bayesian Inference Tool</h1>
+      <p class="text-slate-600 mb-4 font-light">A systematic approach to updating beliefs based on evidence</p>
+      <p class="text-sm text-slate-500 mb-6 max-w-2xl mx-auto">
+        Track your hypotheses and update their probabilities as you gather evidence.
+        Start by creating a hypothesis below or explore your existing ones.
+      </p>
+      <div class="flex justify-center gap-4">
+        <button
+          on:click={() => {
+            const data = JSON.stringify(loadHypotheses(), null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bayes-hypotheses-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }}
+          class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Export Data
+        </button>
+        <label class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          Import Data
+          <input
+            type="file"
+            accept="application/json"
+            class="hidden"
+            on:change={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              
+              const reader = new FileReader();
+              reader.onload = (event) => {
+                try {
+                  const importedHypotheses = JSON.parse(event.target.result as string);
+                  if (confirm('This will replace all your current hypotheses. Are you sure?')) {
+                    saveHypotheses(importedHypotheses);
+                    hypotheses = importedHypotheses;
+                  }
+                } catch (error) {
+                  alert('Invalid JSON file');
+                }
+              };
+              reader.readAsText(file);
+              e.target.value = ''; // Reset input
+            }}
+          />
+        </label>
+      </div>
+    </div>
 
     <!-- Add new hypothesis -->
     <div class="mb-12 p-8 bg-white rounded-lg shadow-sm border border-slate-200">
@@ -53,8 +107,9 @@
       
       <div class="space-y-6">
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-2">What is your hypothesis?</label>
+          <label class="block text-sm font-medium text-slate-700 mb-2" for="hypothesis-name">What is your hypothesis?</label>
           <input
+            id="hypothesis-name"
             type="text"
             bind:value={newHypothesis.name}
             placeholder="e.g., 'Learning a new language will improve my memory'"
@@ -62,8 +117,9 @@
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-2">Detailed Description</label>
+          <label class="block text-sm font-medium text-slate-700 mb-2" for="hypothesis-description">Detailed Description</label>
           <textarea
+            id="hypothesis-description"
             bind:value={newHypothesis.description}
             placeholder="Describe your hypothesis in detail, including any relevant context or assumptions"
             class="w-full p-3 border border-slate-300 rounded-md shadow-sm h-32 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
@@ -71,7 +127,7 @@
         </div>
         <div class="relative">
           <div class="flex justify-between items-center mb-2">
-            <label class="text-sm font-medium text-slate-700">Prior Probability</label>
+            <label class="text-sm font-medium text-slate-700" for="prior-probability">Prior Probability</label>
             <button 
               class="text-indigo-600 text-sm hover:text-indigo-700"
               on:click={() => showPriorHelp = !showPriorHelp}
@@ -92,6 +148,7 @@
             </div>
           {/if}
           <input
+            id="prior-probability"
             type="range"
             bind:value={newHypothesis.priorProbability}
             min="0"
@@ -140,65 +197,106 @@
       {:else}
         <div class="space-y-3">
           {#each hypotheses as hypothesis}
-            <a
-              href="/hypothesis/{hypothesis.id}"
-              class="block bg-white rounded-lg border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-indigo-200 group"
-            >
-              <div class="p-6">
-                <div class="flex items-center justify-between">
-                  <div class="flex-1 min-w-0">
-                    <h3 class="text-xl font-medium text-slate-800 group-hover:text-indigo-600 transition-colors mb-1 truncate">
-                      {hypothesis.name}
-                    </h3>
-                    <p class="text-slate-600 text-sm whitespace-pre-line">{hypothesis.description}</p>
-                  </div>
-                  <div class="ml-6 flex items-center gap-8">
-                    <div class="text-center">
-                      <div class="text-sm font-medium text-slate-500">Prior</div>
-                      <div class="text-lg font-medium text-slate-700">
-                        {formatProbability(hypothesis.priorProbability)}
+            <div class="group relative">
+              <a
+                href="/hypothesis/{hypothesis.id}"
+                class="block bg-white rounded-lg border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-indigo-200"
+              >
+                <div class="p-6">
+                  <div class="flex items-start justify-between gap-6">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-3 mb-1">
+                        <h3 class="text-xl font-medium text-slate-800 group-hover:text-indigo-600 transition-colors truncate">
+                          {hypothesis.name}
+                        </h3>
+                        <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                          <button
+                            class="p-1.5 text-slate-400 hover:text-indigo-600 transition-colors rounded-md hover:bg-slate-50"
+                            aria-label="Duplicate hypothesis"
+                            on:click|stopPropagation={(e) => {
+                              e.preventDefault();
+                              duplicateHypothesis(hypothesis.id);
+                              hypotheses = loadHypotheses(); // Always reload to ensure UI updates
+                            }}
+                            title="Duplicate hypothesis"
+                          >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                            </svg>
+                          </button>
+                          <button
+                            class="p-1.5 text-slate-400 hover:text-red-600 transition-colors rounded-md hover:bg-slate-50"
+                            aria-label="Delete hypothesis"
+                            on:click|stopPropagation={(e) => {
+                              e.preventDefault();
+                              if (confirm('Are you sure you want to delete this hypothesis? This action cannot be undone.')) {
+                                deleteHypothesis(hypothesis.id);
+                                hypotheses = hypotheses.filter(h => h.id !== hypothesis.id);
+                              }
+                            }}
+                            title="Delete hypothesis"
+                          >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <p class="text-slate-600 text-sm whitespace-pre-line">{hypothesis.description}</p>
+                    </div>
+                    <div class="flex items-center gap-8 shrink-0">
+                      <div class="text-center">
+                        <div class="text-sm font-medium text-slate-500">Prior</div>
+                        <div class="text-lg font-medium text-slate-700">
+                          {formatProbability(hypothesis.priorProbability)}
+                        </div>
+                      </div>
+                      <div class="text-center">
+                        <div class="text-sm font-medium text-slate-500">Current</div>
+                        <div class="text-lg font-medium text-indigo-600">
+                          {formatProbability(calculatePosteriorProbability(hypothesis))}
+                        </div>
                       </div>
                     </div>
-                    <div class="text-center">
-                      <div class="text-sm font-medium text-slate-500">Current</div>
-                      <div class="text-lg font-medium text-indigo-600">
-                        {formatProbability(calculatePosteriorProbability(hypothesis))}
-                      </div>
+                  </div>
+                  <div class="mt-4 flex items-center gap-6 text-sm">
+                    <div class="flex items-center gap-2 text-slate-500">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <span>{new Date(hypothesis.observations[hypothesis.observations.length - 1]?.timestamp || Date.now()).toLocaleDateString()}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-slate-500">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                      </svg>
+                      <span>{hypothesis.observations.length} observation{hypothesis.observations.length === 1 ? '' : 's'}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-slate-500">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                      </svg>
+                      <span>
+                        {hypothesis.observations.length > 0 
+                          ? ((calculatePosteriorProbability(hypothesis) - hypothesis.priorProbability) * 100).toFixed(1) + '% change'
+                          : 'No change'}
+                      </span>
                     </div>
                   </div>
                 </div>
-                <div class="mt-4 flex items-center gap-6 text-sm">
-                  <div class="flex items-center gap-2 text-slate-500">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span>{new Date(hypothesis.observations[hypothesis.observations.length - 1]?.timestamp || Date.now()).toLocaleDateString()}</span>
-                  </div>
-                  <div class="flex items-center gap-2 text-slate-500">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    <span>{hypothesis.observations.length} observation{hypothesis.observations.length === 1 ? '' : 's'}</span>
-                  </div>
-                  <div class="flex items-center gap-2 text-slate-500">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                    <span>
-                      {hypothesis.observations.length > 0 
-                        ? ((calculatePosteriorProbability(hypothesis) - hypothesis.priorProbability) * 100).toFixed(1) + '% change'
-                        : 'No change'}
-                    </span>
-                  </div>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 text-sm text-slate-500 rounded-b-lg">
+                  Click to view details and add observations
                 </div>
-              </div>
-              <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 text-sm text-slate-500 rounded-b-lg">
-                Click to view details and add observations
-              </div>
-            </a>
+              </a>
+            </div>
           {/each}
         </div>
       {/if}

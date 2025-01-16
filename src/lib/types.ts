@@ -1,9 +1,18 @@
+export type Tag = {
+  id: string;
+  name: string;
+  color: string;
+};
+
 export interface Hypothesis {
   id: string;
   name: string;
   description: string;
   priorProbability: number; // 0-1
   observations: Observation[];
+  tags: Tag[];
+  createdAt: number;
+  updatedAt: number;
 }
 
 export interface Observation {
@@ -15,4 +24,11 @@ export interface Observation {
   probabilityGivenFalse: number;
   timestamp: number;
   notes?: string;
+  linkedHypotheses?: string[]; // IDs of linked hypotheses
+}
+
+export interface ProbabilityPoint {
+  timestamp: number;
+  probability: number;
+  observationId: string;
 }
