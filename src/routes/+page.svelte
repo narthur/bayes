@@ -123,28 +123,65 @@
           <p class="text-slate-600">No hypotheses yet. Create one above to get started!</p>
         </div>
       {:else}
-        <div class="grid gap-4 md:grid-cols-2">
+        <div class="space-y-3">
           {#each hypotheses as hypothesis}
             <a
               href="/hypothesis/{hypothesis.id}"
-              class="block p-6 bg-white rounded-lg border border-slate-200 shadow-sm transition-all hover:shadow-md"
+              class="block bg-white rounded-lg border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-indigo-200 group"
             >
-              <div class="flex justify-between items-start">
-                <div class="flex-1">
-                  <h3 class="text-xl font-medium text-slate-800">{hypothesis.name}</h3>
-                  <p class="text-slate-600 mt-2 text-sm line-clamp-2">{hypothesis.description}</p>
-                </div>
-                <div class="ml-4 text-right">
-                  <div class="text-2xl font-medium text-indigo-600">
-                    {formatProbability(calculatePosteriorProbability(hypothesis))}
+              <div class="p-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex-1 min-w-0">
+                    <h3 class="text-xl font-medium text-slate-800 group-hover:text-indigo-600 transition-colors mb-1 truncate">
+                      {hypothesis.name}
+                    </h3>
+                    <p class="text-slate-600 text-sm line-clamp-2">{hypothesis.description}</p>
                   </div>
-                  <div class="text-sm text-slate-500">probability</div>
+                  <div class="ml-6 flex items-center gap-8">
+                    <div class="text-center">
+                      <div class="text-sm font-medium text-slate-500">Prior</div>
+                      <div class="text-lg font-medium text-slate-700">
+                        {formatProbability(hypothesis.priorProbability)}
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <div class="text-sm font-medium text-slate-500">Current</div>
+                      <div class="text-lg font-medium text-indigo-600">
+                        {formatProbability(calculatePosteriorProbability(hypothesis))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-4 flex items-center gap-6 text-sm">
+                  <div class="flex items-center gap-2 text-slate-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>{new Date(hypothesis.observations[hypothesis.observations.length - 1]?.timestamp || Date.now()).toLocaleDateString()}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-slate-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <span>{hypothesis.observations.length} observation{hypothesis.observations.length === 1 ? '' : 's'}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-slate-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                    <span>
+                      {hypothesis.observations.length > 0 
+                        ? ((calculatePosteriorProbability(hypothesis) - hypothesis.priorProbability) * 100).toFixed(1) + '% change'
+                        : 'No change'}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <div class="mt-4 flex items-center gap-4 text-sm text-slate-500">
-                <span>Started at {formatProbability(hypothesis.priorProbability)}</span>
-                <span>•</span>
-                <span>{hypothesis.observations.length} observation{hypothesis.observations.length === 1 ? '' : 's'}</span>
+              <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 text-sm text-slate-500 rounded-b-lg">
+                Click to view details and add observations
               </div>
             </a>
           {/each}
