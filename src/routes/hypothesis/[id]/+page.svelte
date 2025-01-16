@@ -318,7 +318,7 @@
 				<h2 class="text-2xl font-serif text-slate-700 mb-6">Evidence Timeline</h2>
 				<div class="space-y-4">
 					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}<div
-							class="p-6 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
+							class="p-6 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors shadow-sm hover:shadow-md"
 						>
 							{#if editingObservation?.id === observation.id}
 								<div
