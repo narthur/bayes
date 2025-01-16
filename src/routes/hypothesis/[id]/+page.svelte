@@ -140,7 +140,7 @@
 								autofocus
 							/>
 						{:else}
-							<button 
+							<button
 								class="text-slate-600 w-full px-2 py-1 -mx-2 min-h-[28px] text-left"
 								on:click={() => (editingDescription = true)}
 								type="button"
@@ -179,9 +179,12 @@
 			</p>
 
 			<div class="space-y-6">
-				<div>          <label class="block text-sm font-medium text-slate-700 mb-2" for="observation-description">What did you observe?</label>
-          <input
-            id="observation-description"
+				<div>
+					<label class="block text-sm font-medium text-slate-700 mb-2" for="observation-description"
+						>What did you observe?</label
+					>
+					<input
+						id="observation-description"
 						type="text"
 						bind:value={newObservation.description}
 						placeholder="What did you observe?"
@@ -189,9 +192,10 @@
 					/>
 				</div>
 
-				<div>          <label class="block text-sm font-medium text-slate-700 mb-2" for="observation-notes"
-            >Notes (supports markdown)</label
-          >
+				<div>
+					<label class="block text-sm font-medium text-slate-700 mb-2" for="observation-notes"
+						>Notes (supports markdown)</label
+					>
 					<AutoResizeTextarea
 						bind:value={newObservation.notes}
 						className="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
@@ -200,7 +204,10 @@
 				</div>
 
 				<div class="relative">
-					<div class="flex justify-between items-center mb-2">            <label class="text-sm font-medium text-slate-700" for="likelihood-ratios">Likelihood Ratios</label>
+					<div class="flex justify-between items-center mb-2">
+						<label class="text-sm font-medium text-slate-700" for="likelihood-ratios"
+							>Likelihood Ratios</label
+						>
 						<button
 							class="text-indigo-600 text-sm hover:text-indigo-700"
 							on:click={() => (showLikelihoodHelp = !showLikelihoodHelp)}
@@ -227,15 +234,16 @@
 					{/if}
 
 					<div class="space-y-4">
-						<div>              <label class="block text-sm font-medium text-slate-700 mb-2" for="prob-given-true">
-                If hypothesis is true, how likely is this evidence?
-                <span class="text-indigo-600"
-                  >{formatProbability(newObservation.probabilityGivenTrue)}</span
-                >
-              </label>
-              <input
-                id="prob-given-true"
-                type="range"
+						<div>
+							<label class="block text-sm font-medium text-slate-700 mb-2" for="prob-given-true">
+								If hypothesis is true, how likely is this evidence?
+								<span class="text-indigo-600"
+									>{formatProbability(newObservation.probabilityGivenTrue)}</span
+								>
+							</label>
+							<input
+								id="prob-given-true"
+								type="range"
 								bind:value={newObservation.probabilityGivenTrue}
 								min="0"
 								max="1"
@@ -259,15 +267,16 @@
 							{/if}
 						</div>
 
-						<div>              <label class="block text-sm font-medium text-slate-700 mb-2" for="prob-given-false">
-                If hypothesis is false, how likely is this evidence?
-                <span class="text-indigo-600"
-                  >{formatProbability(newObservation.probabilityGivenFalse)}</span
-                >
-              </label>
-              <input
-                id="prob-given-false"
-                type="range"
+						<div>
+							<label class="block text-sm font-medium text-slate-700 mb-2" for="prob-given-false">
+								If hypothesis is false, how likely is this evidence?
+								<span class="text-indigo-600"
+									>{formatProbability(newObservation.probabilityGivenFalse)}</span
+								>
+							</label>
+							<input
+								id="prob-given-false"
+								type="range"
 								bind:value={newObservation.probabilityGivenFalse}
 								min="0"
 								max="1"
@@ -308,91 +317,106 @@
 			<div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
 				<h2 class="text-2xl font-serif text-slate-700 mb-6">Evidence Timeline</h2>
 				<div class="space-y-4">
-					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}<div class="p-6 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors">
-  {#if editingObservation?.id === observation.id}
-    <div class="bg-slate-50/70 rounded-lg border border-slate-200 border-dashed p-4 space-y-3">
-                <div>
-                  <input
-                    type="text"
-                    bind:value={editingObservation.description}
-                    class="w-full p-2 border border-slate-300 rounded-md"
-                    placeholder="What did you observe?"
-                  />
-                </div>
-                <div class="space-y-1">
-                  <label class="block text-sm font-medium text-slate-700" for="edit-observation-notes">Notes</label>
-                  <AutoResizeTextarea
-                    id="edit-observation-notes"
-                    bind:value={editingObservation.notes}
-                    className="w-full p-2 border border-slate-300 rounded-md"
-                    placeholder="Add notes (supports markdown)..."
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-slate-700 mb-1" for="edit-prob-given-true">
-                    If hypothesis is true: {formatProbability(
-                      editingObservation.probabilityGivenTrue
-                    )}
-                  </label>
-                  <input
-                    id="edit-prob-given-true"
-                    type="range"
-                    bind:value={editingObservation.probabilityGivenTrue}
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    class="w-full"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-slate-700 mb-1" for="edit-prob-given-false">
-                    If hypothesis is false: {formatProbability(
-                      editingObservation.probabilityGivenFalse
-                    )}
-                  </label>
-                  <input
-                    id="edit-prob-given-false"
-                    type="range"
-                    bind:value={editingObservation.probabilityGivenFalse}
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    class="w-full"
-                  />
-                </div>
-                <div class="flex items-center justify-between gap-4 pt-2">
-                  <div class="text-xs text-slate-500">
-                    Supports markdown formatting
-                  </div>
-                  <div class="flex gap-2">
-                    <button
-                      on:click={() => (editingObservation = null)}
-                      class="px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-slate-900"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      on:click={() => {
-                        editObservation(editingObservation);
-                        editingObservation = null;
-                      }}
-                      class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-700 shadow-sm"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
+					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}<div
+							class="p-6 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
+						>
+							{#if editingObservation?.id === observation.id}
+								<div
+									class="bg-slate-50/70 rounded-lg border border-slate-200 border-dashed p-4 space-y-3"
+								>
+									<div>
+										<input
+											type="text"
+											bind:value={editingObservation.description}
+											class="w-full p-2 border border-slate-300 rounded-md"
+											placeholder="What did you observe?"
+										/>
+									</div>
+									<div class="space-y-1">
+										<label
+											class="block text-sm font-medium text-slate-700"
+											for="edit-observation-notes">Notes</label
+										>
+										<AutoResizeTextarea
+											id="edit-observation-notes"
+											bind:value={editingObservation.notes}
+											className="w-full p-2 border border-slate-300 rounded-md"
+											placeholder="Add notes (supports markdown)..."
+										/>
+									</div>
+									<div>
+										<label
+											class="block text-sm font-medium text-slate-700 mb-1"
+											for="edit-prob-given-true"
+										>
+											If hypothesis is true: {formatProbability(
+												editingObservation.probabilityGivenTrue
+											)}
+										</label>
+										<input
+											id="edit-prob-given-true"
+											type="range"
+											bind:value={editingObservation.probabilityGivenTrue}
+											min="0"
+											max="1"
+											step="0.01"
+											class="w-full"
+										/>
+									</div>
+									<div>
+										<label
+											class="block text-sm font-medium text-slate-700 mb-1"
+											for="edit-prob-given-false"
+										>
+											If hypothesis is false: {formatProbability(
+												editingObservation.probabilityGivenFalse
+											)}
+										</label>
+										<input
+											id="edit-prob-given-false"
+											type="range"
+											bind:value={editingObservation.probabilityGivenFalse}
+											min="0"
+											max="1"
+											step="0.01"
+											class="w-full"
+										/>
+									</div>
+									<div class="flex items-center justify-between gap-4 pt-2">
+										<div class="text-xs text-slate-500">Supports markdown formatting</div>
+										<div class="flex gap-2">
+											<button
+												on:click={() => (editingObservation = null)}
+												class="px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-slate-900"
+											>
+												Cancel
+											</button>
+											<button
+												on:click={() => {
+													editObservation(editingObservation);
+													editingObservation = null;
+												}}
+												class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-700 shadow-sm"
+											>
+												Save
+											</button>
+										</div>
+									</div>
 								</div>
-							{:else}                <div class="flex justify-between gap-4">
-                  <div class="flex-1 space-y-4">
-                    <div class="flex items-start justify-between gap-4">
-                      <p class="text-slate-800 font-medium leading-snug">{observation.description}</p>
-                      <div class="flex gap-2 shrink-0 pt-0.5">                        <button
-                          on:click={() => (editingObservation = { ...observation })}
-                          class="p-1 text-slate-400 hover:text-indigo-600 transition-colors"
-                          title="Edit observation"
-                          aria-label="Edit observation"
-                        >
+							{:else}
+								<div class="flex justify-between gap-4">
+									<div class="flex-1 space-y-4">
+										<div class="flex items-start justify-between gap-4">
+											<p class="text-slate-800 font-medium leading-snug">
+												{observation.description}
+											</p>
+											<div class="flex gap-2 shrink-0 pt-0.5">
+												<button
+													on:click={() => (editingObservation = { ...observation })}
+													class="p-1 text-slate-400 hover:text-indigo-600 transition-colors"
+													title="Edit observation"
+													aria-label="Edit observation"
+												>
 													<svg
 														class="w-5 h-5"
 														fill="none"
@@ -406,16 +430,17 @@
 															d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
 														/>
 													</svg>
-												</button>                        <button
-                          on:click={() => {
-                            if (confirm('Are you sure you want to delete this observation?')) {
-                              deleteObservation(observation.id);
-                            }
-                          }}
-                          class="p-1 text-slate-400 hover:text-red-600 transition-colors"
-                          title="Delete observation"
-                          aria-label="Delete observation"
-                        >
+												</button>
+												<button
+													on:click={() => {
+														if (confirm('Are you sure you want to delete this observation?')) {
+															deleteObservation(observation.id);
+														}
+													}}
+													class="p-1 text-slate-400 hover:text-red-600 transition-colors"
+													title="Delete observation"
+													aria-label="Delete observation"
+												>
 													<svg
 														class="w-5 h-5"
 														fill="none"
@@ -431,7 +456,8 @@
 													</svg>
 												</button>
 											</div>
-										</div>                    <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-600">
+										</div>
+										<div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-600">
 											<div class="flex items-center gap-2">
 												<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 													<path
@@ -468,7 +494,10 @@
 											</div>
 										</div>
 
-										{#if observation.notes}                      <div class="prose prose-sm prose-slate max-w-none bg-slate-50/50 rounded-md p-3 border border-slate-100">
+										{#if observation.notes}
+											<div
+												class="prose prose-sm prose-slate max-w-none border-t border-slate-200 pt-4 mt-4"
+											>
 												{@html marked(observation.notes)}
 											</div>
 										{/if}
