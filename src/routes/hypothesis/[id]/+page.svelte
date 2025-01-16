@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import AutoResizeTextarea from '$lib/components/AutoResizeTextarea.svelte';
+  import { marked } from 'marked';
   import type { Hypothesis, Observation } from '$lib/types';
   import { calculatePosteriorProbability } from '$lib/bayes';
   import { saveHypotheses, loadHypotheses } from '$lib/storage';
@@ -118,13 +119,6 @@
             </div>
           </div>
           <div class="relative group">
-            <div class="text-slate-600 w-full whitespace-pre-line px-2 py-1 -mx-2 min-h-[28px]">
-              {#if hypothesis.description}
-                {hypothesis.description}
-              {:else}
-                <span class="text-slate-400">Add a description...</span>
-              {/if}
-            </div>
             {#if editingDescription}
               <AutoResizeTextarea
                 bind:value={hypothesis.description}
@@ -133,15 +127,20 @@
                   editingDescription = false;
                 }}
                 on:blur={() => editingDescription = false}
-                className="absolute inset-0 text-slate-600 w-full bg-white px-2 py-1 -mx-2 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
+                className="text-slate-600 w-full bg-white px-2 py-1 -mx-2 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
                 autofocus
               />
             {:else}
-              <button
+              <div 
+                class="text-slate-600 w-full px-2 py-1 -mx-2 min-h-[28px] prose prose-sm prose-slate max-w-none cursor-text"
                 on:click={() => editingDescription = true}
-                class="absolute inset-0 w-full h-full opacity-0 cursor-text"
-                aria-label="Edit description"
-              ></button>
+              >
+                {#if hypothesis.description}
+                  {@html marked(hypothesis.description)}
+                {:else}
+                  <span class="text-slate-400">Add a description...</span>
+                {/if}
+              </div>
             {/if}
             <div class="absolute right-0 top-0 hidden group-hover:block text-xs text-slate-400">
               Click to edit

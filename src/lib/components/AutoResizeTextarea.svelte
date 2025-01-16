@@ -1,32 +1,48 @@
 <script lang="ts">
-	export let value: string;
-	export let placeholder = '';
-	export let className = '';
+  import { onMount } from 'svelte';
+  
+  export let value: string;
+  export let placeholder = '';
+  export let className = '';
+  export let autofocus = false;
 
-	function handleInput(e: Event) {
-		const target = e.target as HTMLTextAreaElement;
-		// Add non-breaking space after every newline
-		const contentWithSpaces = target.value.replace(/\n/g, '\n\u00a0');
-		// Store cursor position
-		const cursorPos = target.selectionStart;
-		// Temporarily set value to include spaces for height calculation
-		target.value = contentWithSpaces;
-		// Reset height to auto to get the correct scrollHeight
-		target.style.height = 'auto';
-		// Set the height to match the content
-		target.style.height = target.scrollHeight + 'px';
-		// Restore original value and cursor position
-		target.value = value;
-		target.setSelectionRange(cursorPos, cursorPos);
-	}
+  function adjustHeight(textarea: HTMLTextAreaElement) {
+    // Add non-breaking space after every newline
+    const contentWithSpaces = textarea.value.replace(/\n/g, '\n\u00a0');
+    // Store cursor position
+    const cursorPos = textarea.selectionStart;
+    // Temporarily set value to include spaces for height calculation
+    textarea.value = contentWithSpaces;
+    // Reset height to auto to get the correct scrollHeight
+    textarea.style.height = 'auto';
+    // Set the height to match the content
+    textarea.style.height = textarea.scrollHeight + 'px';
+    // Restore original value and cursor position
+    textarea.value = value;
+    textarea.setSelectionRange(cursorPos, cursorPos);
+  }
+
+  function handleInput(e: Event) {
+    adjustHeight(e.target as HTMLTextAreaElement);
+  }
+
+  onMount(() => {
+    const textarea = document.querySelector('textarea');
+    if (textarea) {
+      adjustHeight(textarea);
+      if (autofocus) {
+        textarea.focus();
+      }
+    }
+  });
 </script>
 
 <textarea
-	bind:value
-	on:input={handleInput}
-	on:change
-	on:blur
-	{placeholder}
-	class="resize-none overflow-hidden {className}"
-	rows="1"
+  bind:value
+  on:input={handleInput}
+  on:change
+  on:blur
+  {placeholder}
+  class="resize-none overflow-hidden {className}"
+  rows="1"
 ></textarea>
