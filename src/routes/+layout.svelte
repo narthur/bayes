@@ -7,7 +7,7 @@
 		<slot />
 	</div>
 
-	<footer class="bg-white border-t border-slate-200 py-8 mt-12">
+	<footer class="bg-white border-t border-slate-200 py-8">
 		<div class="max-w-4xl mx-auto px-4">
 			<div class="flex flex-wrap justify-center gap-4 text-sm text-slate-500">
 				<a
