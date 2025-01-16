@@ -1,38 +1,73 @@
-# sv
+# Bayesian Inference Tool
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A web application for applying Bayesian reasoning to everyday life. Track hypotheses, record observations, and update probabilities based on evidence.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Create and manage hypotheses with prior probabilities
+- Add observations with likelihood ratios
+- Automatic calculation of posterior probabilities using Bayes' theorem
+- Local-first: all data stored in browser localStorage
+- Responsive design
+- Keyboard accessible
 
+## Getting Started
+
+### Prerequisites
+
+- Node.js 16+
+- pnpm
+
+### Installation
+
+1. Clone the repository
 ```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+git clone [your-repo-url]
+cd bayes
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
+2. Install dependencies
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm install
 ```
 
-## Building
-
-To create a production version of your app:
-
+3. Start the development server
 ```bash
-npm run build
+pnpm dev
 ```
 
-You can preview the production build with `npm run preview`.
+4. Build for production
+```bash
+pnpm build
+```
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Development
+
+- Built with SvelteKit
+- Styled with TailwindCSS
+- TypeScript for type safety
+- Local storage for data persistence
+
+## Deployment
+
+This is a SvelteKit application that can be deployed to any platform that supports Node.js or static site hosting.
+
+1. Build the application:
+```bash
+pnpm build
+```
+
+2. Preview the production build:
+```bash
+pnpm preview
+```
+
+## License
+
+MIT
+
+## Author
+
+Nathan Arthur
+- Website: [nathanarthur.com](https://nathanarthur.com)
+- Pine Peak Digital: [pinepeakdigital.com](https://pinepeakdigital.com)
