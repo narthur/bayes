@@ -99,10 +99,25 @@
             step="0.01"
             class="w-full"
           />
-          <div class="flex justify-between items-center mt-1">
-            <span class="text-sm text-slate-500">0%</span>
-            <span class="text-sm font-medium text-indigo-600">{formatProbability(newHypothesis.priorProbability)}</span>
-            <span class="text-sm text-slate-500">100%</span>
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-slate-500">0%</span>
+              <span class="text-sm font-medium text-indigo-600">{formatProbability(newHypothesis.priorProbability)}</span>
+              <span class="text-sm text-slate-500">100%</span>
+            </div>
+            {#if newHypothesis.priorProbability === 0 || newHypothesis.priorProbability === 1}
+              <div class="p-3 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-800">
+                <strong>Warning about extreme probability:</strong>
+                {#if newHypothesis.priorProbability === 0}
+                  Setting a 0% prior probability means you believe this hypothesis is impossible.
+                  No amount of evidence will be able to increase this probability.
+                {:else}
+                  Setting a 100% prior probability means you believe this hypothesis is absolutely certain.
+                  No amount of evidence will be able to decrease this probability.
+                {/if}
+                Consider using a small value like 1% or 99% instead to remain open to evidence.
+              </div>
+            {/if}
           </div>
         </div>
         <button

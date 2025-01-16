@@ -121,6 +121,19 @@
                 step="0.01"
                 class="w-full"
               />
+              {#if newObservation.probabilityGivenTrue === 0 || newObservation.probabilityGivenTrue === 1}
+                <div class="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-800">
+                  <strong>Warning about extreme likelihood:</strong>
+                  {#if newObservation.probabilityGivenTrue === 0}
+                    Setting this to 0% means this evidence would be impossible if your hypothesis is true.
+                    Finding this evidence would completely disprove your hypothesis.
+                  {:else}
+                    Setting this to 100% means this evidence would be guaranteed if your hypothesis is true.
+                    Not finding this evidence would completely disprove your hypothesis.
+                  {/if}
+                  Consider using a small value like 1% or 99% instead to account for uncertainty.
+                </div>
+              {/if}
             </div>
             
             <div>
@@ -136,6 +149,19 @@
                 step="0.01"
                 class="w-full"
               />
+              {#if newObservation.probabilityGivenFalse === 0 || newObservation.probabilityGivenFalse === 1}
+                <div class="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-800">
+                  <strong>Warning about extreme likelihood:</strong>
+                  {#if newObservation.probabilityGivenFalse === 0}
+                    Setting this to 0% means this evidence would be impossible if your hypothesis is false.
+                    Finding this evidence would completely prove your hypothesis.
+                  {:else}
+                    Setting this to 100% means this evidence would be guaranteed if your hypothesis is false.
+                    Not finding this evidence would completely prove your hypothesis.
+                  {/if}
+                  Consider using a small value like 1% or 99% instead to account for uncertainty.
+                </div>
+              {/if}
             </div>
           </div>
         </div>
