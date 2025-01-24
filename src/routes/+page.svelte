@@ -69,8 +69,6 @@
 				Track your hypotheses and update their probabilities as you gather evidence. Start by
 				creating a hypothesis below or explore your existing ones.
 			</p>
-
-=======
 		</div>
 
 		<!-- Add new hypothesis -->
