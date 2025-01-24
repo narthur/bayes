@@ -1,8 +1,20 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import type { BeeminderConfig } from '$lib/types';
 	import { loadHypotheses, saveHypotheses } from '$lib/storage';
 	import { BeeminderService } from '$lib/beeminder';
+
+	// Debounce function
+	function debounce<T extends (...args: any[]) => any>(
+		fn: T,
+		wait: number
+	): (...args: Parameters<T>) => void {
+		let timeoutId: ReturnType<typeof setTimeout>;
+		return (...args: Parameters<T>) => {
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(() => fn(...args), wait);
+		};
+	}
 
 	let beeminderConfig: BeeminderConfig = {
 		username: '',
@@ -12,6 +24,8 @@
 	};
 	let goalCheckResult = '';
 	let observationGoalCheckResult = '';
+	let isCheckingGoal = false;
+	let isCheckingObservationGoal = false;
 
 	onMount(() => {
 		const stored = localStorage.getItem('beeminder-config');
@@ -24,9 +38,50 @@
 		goalSlug: string | undefined,
 		resultVar: 'goalCheckResult' | 'observationGoalCheckResult'
 	) {
-		if (!beeminderConfig.username || !beeminderConfig.authToken || !goalSlug) {
-			goalCheckResult = 'Please fill in all fields first';
-			return;
+		if (resultVar === 'goalCheckResult') {
+			isCheckingGoal = true;
+		} else {
+			isCheckingObservationGoal = true;
+		}
+
+		try {
+			if (!beeminderConfig.username || !beeminderConfig.authToken || !goalSlug) {
+				if (resultVar === 'goalCheckResult') {
+					goalCheckResult = 'Please fill in all fields first';
+				} else {
+					observationGoalCheckResult = 'Please fill in all fields first';
+				}
+				return;
+			}
+
+			const service = new BeeminderService(beeminderConfig);
+			const goals = await service.getGoals();
+			const goal = goals.find((g) => g.slug === goalSlug);
+			if (goal) {
+				if (resultVar === 'goalCheckResult') {
+					goalCheckResult = `✓ Found goal "${goal.slug}"`;
+				} else {
+					observationGoalCheckResult = `✓ Found goal "${goal.slug}"`;
+				}
+			} else {
+				if (resultVar === 'goalCheckResult') {
+					goalCheckResult = '✗ Goal not found';
+				} else {
+					observationGoalCheckResult = '✗ Goal not found';
+				}
+			}
+		} catch (error) {
+			if (resultVar === 'goalCheckResult') {
+				goalCheckResult = '✗ Failed to check goal';
+			} else {
+				observationGoalCheckResult = '✗ Failed to check goal';
+			}
+		} finally {
+			if (resultVar === 'goalCheckResult') {
+				isCheckingGoal = false;
+			} else {
+				isCheckingObservationGoal = false;
+			}
 		}
 
 		const service = new BeeminderService(beeminderConfig);
@@ -194,74 +249,69 @@
 					<div>
 						<label for="selected-goal" class="block text-sm font-medium text-slate-700 mb-2"
 							>New Hypothesis Goal Slug</label
-						>
-						<div class="flex gap-2">
+						>						<div class="relative">
 							<input
 								id="selected-goal"
 								type="text"
 								bind:value={beeminderConfig.selectedGoal}
-								class="flex-1 p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+								oninput={debounce(() => checkGoal(beeminderConfig.selectedGoal, 'goalCheckResult'), 500)}
+								class="w-full p-3 pr-10 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
 								placeholder="your-goal-slug"
 							/>
-							<button
-								type="button"
-								onclick={() => checkGoal(beeminderConfig.selectedGoal, 'goalCheckResult')}
-								class="px-4 py-2 text-sm font-medium text-white bg-slate-600 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-							>
-								Check
-							</button>
+							<div class="absolute inset-y-0 right-0 flex items-center pr-3">
+								{#if isCheckingGoal}
+									<svg class="animate-spin h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+										<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+										<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+									</svg>
+								{:else if goalCheckResult.startsWith('✓')}
+									<svg class="h-5 w-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+									</svg>
+								{:else if goalCheckResult.startsWith('✗')}
+									<svg class="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+									</svg>
+								{/if}
+							</div>
 						</div>
-						{#if goalCheckResult}
-							<p
-								class="mt-2 text-sm"
-								class:text-emerald-600={goalCheckResult.startsWith('✓')}
-								class:text-red-600={goalCheckResult.startsWith('✗')}
-							>
-								{goalCheckResult}
-							</p>
-						{:else}
-							<p class="mt-2 text-sm text-slate-500">
-								Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are
-								created
-							</p>
-						{/if}
+						<p class="mt-2 text-sm text-slate-500">
+							Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are created
+						</p>
 					</div>
 
 					<div>
 						<label for="observation-goal" class="block text-sm font-medium text-slate-700 mb-2"
 							>New Observation Goal Slug</label
-						>
-						<div class="flex gap-2">
+						>						<div class="relative">
 							<input
 								id="observation-goal"
 								type="text"
 								bind:value={beeminderConfig.observationGoal}
-								class="flex-1 p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+								oninput={debounce(() => checkGoal(beeminderConfig.observationGoal, 'observationGoalCheckResult'), 500)}
+								class="w-full p-3 pr-10 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
 								placeholder="observation-goal-slug"
 							/>
-							<button
-								type="button"
-								onclick={() =>
-									checkGoal(beeminderConfig.observationGoal, 'observationGoalCheckResult')}
-								class="px-4 py-2 text-sm font-medium text-white bg-slate-600 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-							>
-								Check
-							</button>
+							<div class="absolute inset-y-0 right-0 flex items-center pr-3">
+								{#if isCheckingObservationGoal}
+									<svg class="animate-spin h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+										<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+										<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+									</svg>
+								{:else if observationGoalCheckResult.startsWith('✓')}
+									<svg class="h-5 w-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+									</svg>
+								{:else if observationGoalCheckResult.startsWith('✗')}
+									<svg class="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+									</svg>
+								{/if}
+							</div>
 						</div>
-						{#if observationGoalCheckResult}
-							<p
-								class="mt-2 text-sm"
-								class:text-emerald-600={observationGoalCheckResult.startsWith('✓')}
-								class:text-red-600={observationGoalCheckResult.startsWith('✗')}
-							>
-								{observationGoalCheckResult}
-							</p>
-						{:else}
-							<p class="mt-2 text-sm text-slate-500">
-								Enter the slug of the Beeminder goal to send datapoints to when new observations are
-								added
-							</p>
-						{/if}
+						<p class="mt-2 text-sm text-slate-500">
+							Enter the slug of the Beeminder goal to send datapoints to when new observations are added
+						</p>
 					</div>
 
 					<button
