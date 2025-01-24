@@ -70,70 +70,7 @@
 				creating a hypothesis below or explore your existing ones.
 			</p>
 
-			<div class="flex justify-center gap-4">
-				<button
-					on:click={() => {
-						const data = JSON.stringify(loadHypotheses(), null, 2);
-						const blob = new Blob([data], { type: 'application/json' });
-						const url = URL.createObjectURL(blob);
-						const a = document.createElement('a');
-						a.href = url;
-						a.download = `bayes-hypotheses-${new Date().toISOString().split('T')[0]}.json`;
-						document.body.appendChild(a);
-						a.click();
-						document.body.removeChild(a);
-						URL.revokeObjectURL(url);
-					}}
-					class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-				>
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-						/>
-					</svg>
-					Export Data
-				</button>
-				<label
-					class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-				>
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-						/>
-					</svg>
-					Import Data
-					<input
-						type="file"
-						accept="application/json"
-						class="hidden"
-						on:change={(e) => {
-							const file = e.target.files?.[0];
-							if (!file) return;
-
-							const reader = new FileReader();
-							reader.onload = (event) => {
-								try {
-									const importedHypotheses = JSON.parse(event.target.result as string);
-									if (confirm('This will replace all your current hypotheses. Are you sure?')) {
-										saveHypotheses(importedHypotheses);
-										hypotheses = importedHypotheses;
-									}
-								} catch (error) {
-									alert('Invalid JSON file');
-								}
-							};
-							reader.readAsText(file);
-							e.target.value = ''; // Reset input
-						}}
-					/>
-				</label>
-			</div>
+=======
 		</div>
 
 		<!-- Add new hypothesis -->
