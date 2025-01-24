@@ -27,7 +27,7 @@
 		</div>
 
 		<div class="mt-24" id="learn-more">
-			<div class="grid md:grid-cols-3 gap-8">
+			<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 				<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
 					<div class="text-indigo-600 mb-4">
 						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,6 +79,40 @@
 					<p class="text-slate-600">
 						Watch as probabilities update automatically using Bayes' theorem. Make better decisions based
 						on evidence.
+					</p>
+				</div>
+
+				<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+					<div class="text-indigo-600 mb-4">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+							/>
+						</svg>
+					</div>
+					<h3 class="text-xl font-serif text-slate-800 mb-2">Private & Local</h3>
+					<p class="text-slate-600">
+						No sign up required. All data is stored locally in your browser. Your hypotheses stay private and under your control.
+					</p>
+				</div>
+
+				<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+					<div class="text-indigo-600 mb-4">
+						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M13 10V3L4 14h7v7l9-11h-7z"
+							/>
+						</svg>
+					</div>
+					<h3 class="text-xl font-serif text-slate-800 mb-2">Beeminder Integration</h3>
+					<p class="text-slate-600">
+						Optional integration with Beeminder to track your hypothesis creation and evidence gathering habits.
 					</p>
 				</div>
 			</div>
