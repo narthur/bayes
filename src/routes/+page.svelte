@@ -17,8 +17,6 @@
 	let beeminderConfig: BeeminderConfig;
 	import { searchQuery } from '$lib';
 
-
-
 	onMount(() => {
 		hypotheses = loadHypotheses();
 		const stored = localStorage.getItem('beeminder-config');
@@ -64,7 +62,7 @@
 				<div class="flex items-center gap-4">
 					<button
 						on:click={() => (showNewHypothesisModal = true)}
-						class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium flex items-center gap-2"
+						class="px-4 py-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-md transition-colors font-medium flex items-center gap-2 border border-indigo-200"
 					>
 						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
@@ -242,5 +240,3 @@
 		</div>
 	</div>
 </main>
-
-
