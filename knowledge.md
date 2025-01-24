@@ -10,6 +10,12 @@ A web application for applying Bayesian reasoning to everyday life. Track hypoth
 - TypeScript for type safety
 - TailwindCSS for styling
 
+## Page Structure
+- `/`: Marketing landing page with feature overview
+- `/hypotheses`: Main list view of all hypotheses
+- `/hypothesis/[id]`: Individual hypothesis view with evidence
+- `/settings`: Configuration and data management
+
 ## Key Features
 - Create and manage hypotheses
 - Add observations with likelihood ratios
