@@ -30,11 +30,11 @@
 	}
 </script>
 
-<main class="min-h-screen bg-slate-50 py-8 px-4">
+<main class="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 px-4">
 	<div class="max-w-4xl mx-auto">
 		<div class="mb-12">
-			<h1 class="text-4xl font-serif text-slate-800 mb-4">Your Hypotheses</h1>
-			<p class="text-slate-600">Track and update your beliefs based on evidence</p>
+			<h1 class="text-4xl font-serif text-slate-800 dark:text-slate-100 mb-4">Your Hypotheses</h1>
+			<p class="text-slate-600 dark:text-slate-300">Track and update your beliefs based on evidence</p>
 		</div>
 
 		<Modal
@@ -50,9 +50,9 @@
 		</Modal>
 
 		<!-- List of hypotheses -->
-		<div class="mb-12 p-8 bg-white rounded-lg shadow-sm border border-slate-200">
+		<div class="mb-12 p-8 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
 			<div class="flex items-center justify-between mb-4">
-				<h2 class="text-2xl font-serif text-slate-700">All Hypotheses</h2>
+				<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100">All Hypotheses</h2>
 				<div class="flex items-center gap-4">
 					<button
 						on:click={() => (showNewHypothesisModal = true)}
@@ -71,8 +71,8 @@
 				</div>
 			</div>
 			{#if hypotheses.length === 0}
-				<div class="text-center py-12 bg-white rounded-lg border border-slate-200">
-					<p class="text-slate-600">No hypotheses yet. Create one above to get started!</p>
+				<div class="text-center py-12 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+					<p class="text-slate-600 dark:text-slate-300">No hypotheses yet. Create one above to get started!</p>
 				</div>
 			{:else}
 				<div class="space-y-3">
@@ -80,14 +80,14 @@
 						<div class="group relative">
 							<a
 								href="/hypothesis/{hypothesis.id}"
-								class="block bg-white rounded-lg border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-indigo-200"
+								class="block bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-all hover:shadow-md hover:border-indigo-200 dark:hover:border-indigo-500"
 							>
 								<div class="p-6">
 									<div class="flex items-start justify-between gap-6">
 										<div class="flex-1 min-w-0">
 											<div class="flex items-center gap-3 mb-1">
 												<h3
-													class="text-xl font-medium text-slate-800 group-hover:text-indigo-600 transition-colors truncate"
+													class="text-xl font-medium text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate"
 												>
 													{hypothesis.name}
 												</h3>
@@ -148,27 +148,27 @@
 													</button>
 												</div>
 											</div>
-											<p class="text-slate-600 text-sm whitespace-pre-line">
+											<p class="text-slate-600 dark:text-slate-300 text-sm whitespace-pre-line">
 												{hypothesis.description}
 											</p>
 										</div>
 										<div class="flex items-center gap-8 shrink-0">
 											<div class="text-center">
-												<div class="text-sm font-medium text-slate-500">Prior</div>
-												<div class="text-lg font-medium text-slate-700">
+												<div class="text-sm font-medium text-slate-500 dark:text-slate-400">Prior</div>
+												<div class="text-lg font-medium text-slate-700 dark:text-slate-200">
 													{formatProbability(hypothesis.priorProbability)}
 												</div>
 											</div>
 											<div class="text-center">
-												<div class="text-sm font-medium text-slate-500">Current</div>
-												<div class="text-lg font-medium text-indigo-600">
+												<div class="text-sm font-medium text-slate-500 dark:text-slate-400">Current</div>
+												<div class="text-lg font-medium text-indigo-600 dark:text-indigo-400">
 													{formatProbability(calculatePosteriorProbability(hypothesis))}
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="mt-4 flex items-center gap-6 text-sm">
-										<div class="flex items-center gap-2 text-slate-500">
+										<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
 											<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path
 													stroke-linecap="round"
@@ -222,7 +222,7 @@
 									</div>
 								</div>
 								<div
-									class="px-6 py-3 bg-slate-50 border-t border-slate-200 text-sm text-slate-500 rounded-b-lg"
+									class="px-6 py-3 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 text-sm text-slate-500 dark:text-slate-400 rounded-b-lg"
 								>
 									Click to view details and add observations
 								</div>
