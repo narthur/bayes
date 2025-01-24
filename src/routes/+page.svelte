@@ -2,11 +2,11 @@
 	import { goto } from '$app/navigation';
 </script>
 
-<main class="min-h-screen bg-slate-50">
+<main class="min-h-screen bg-slate-50 dark:bg-slate-900">
 	<div class="max-w-4xl mx-auto px-4 py-16 sm:py-24">
 		<div class="text-center">
-			<h1 class="text-5xl font-serif text-slate-800 mb-6">Bayesian Inference Tool</h1>
-			<p class="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
+			<h1 class="text-5xl font-serif text-slate-800 dark:text-slate-100 mb-6">Bayesian Inference Tool</h1>
+			<p class="text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
 				A systematic approach to updating beliefs based on evidence. Track hypotheses and calculate
 				probabilities using Bayes' theorem.
 			</p>
@@ -28,8 +28,8 @@
 
 		<div class="mt-24" id="learn-more">
 			<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-				<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-					<div class="text-indigo-600 mb-4">
+				<div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+					<div class="text-indigo-600 dark:text-indigo-400 mb-4">
 						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								stroke-linecap="round"
@@ -39,15 +39,15 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="text-xl font-serif text-slate-800 mb-2">Track Hypotheses</h3>
-					<p class="text-slate-600">
+					<h3 class="text-xl font-serif text-slate-800 dark:text-slate-100 mb-2">Track Hypotheses</h3>
+					<p class="text-slate-600 dark:text-slate-300">
 						Create and manage hypotheses about anything. Assign initial probabilities based on your prior
 						beliefs.
 					</p>
 				</div>
 
-				<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-					<div class="text-indigo-600 mb-4">
+				<div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+					<div class="text-indigo-600 dark:text-indigo-400 mb-4">
 						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								stroke-linecap="round"
@@ -57,15 +57,15 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="text-xl font-serif text-slate-800 mb-2">Record Evidence</h3>
-					<p class="text-slate-600">
+					<h3 class="text-xl font-serif text-slate-800 dark:text-slate-100 mb-2">Record Evidence</h3>
+					<p class="text-slate-600 dark:text-slate-300">
 						Add observations and evidence as you encounter them. Rate how likely each piece of evidence
 						would be under different scenarios.
 					</p>
 				</div>
 
-				<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-					<div class="text-indigo-600 mb-4">
+				<div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+					<div class="text-indigo-600 dark:text-indigo-400 mb-4">
 						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								stroke-linecap="round"
@@ -75,15 +75,15 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="text-xl font-serif text-slate-800 mb-2">Update Beliefs</h3>
-					<p class="text-slate-600">
+					<h3 class="text-xl font-serif text-slate-800 dark:text-slate-100 mb-2">Update Beliefs</h3>
+					<p class="text-slate-600 dark:text-slate-300">
 						Watch as probabilities update automatically using Bayes' theorem. Make better decisions based
 						on evidence.
 					</p>
 				</div>
 
-				<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-					<div class="text-indigo-600 mb-4">
+				<div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+					<div class="text-indigo-600 dark:text-indigo-400 mb-4">
 						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								stroke-linecap="round"
@@ -93,14 +93,14 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="text-xl font-serif text-slate-800 mb-2">Private & Local</h3>
-					<p class="text-slate-600">
+					<h3 class="text-xl font-serif text-slate-800 dark:text-slate-100 mb-2">Private & Local</h3>
+					<p class="text-slate-600 dark:text-slate-300">
 						No sign up required. All data is stored locally in your browser. Your hypotheses stay private and under your control.
 					</p>
 				</div>
 
-				<div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-					<div class="text-indigo-600 mb-4">
+				<div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+					<div class="text-indigo-600 dark:text-indigo-400 mb-4">
 						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								stroke-linecap="round"
@@ -110,8 +110,8 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="text-xl font-serif text-slate-800 mb-2">Beeminder Integration</h3>
-					<p class="text-slate-600">
+					<h3 class="text-xl font-serif text-slate-800 dark:text-slate-100 mb-2">Beeminder Integration</h3>
+					<p class="text-slate-600 dark:text-slate-300">
 						Optional integration with Beeminder to track your hypothesis creation and evidence gathering habits.
 					</p>
 				</div>
