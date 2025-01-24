@@ -19,7 +19,7 @@
 	let beeminderConfig: BeeminderConfig = {
 		username: '',
 		authToken: '',
-		selectedGoal: '',
+		hypothesisGoal: '',
 		observationGoal: ''
 	};
 	let goalCheckResult = '';
@@ -223,7 +223,7 @@
 									beeminderConfig = {
 										username: '',
 										authToken: '',
-										selectedGoal: '',
+										hypothesisGoal: '',
 										observationGoal: ''
 									};
 									saveHypotheses([]);
@@ -287,15 +287,11 @@
 						<label for="selected-goal" class="block text-sm font-medium text-slate-700 mb-2"
 							>New Hypothesis Goal Slug</label
 						>
-						<div class="relative">
-							<input
-								id="selected-goal"
+						<div class="relative">							<input
+								id="hypothesis-goal"
 								type="text"
-								bind:value={beeminderConfig.selectedGoal}
-								oninput={debounce(
-									() => checkGoal(beeminderConfig.selectedGoal, 'goalCheckResult'),
-									500
-								)}
+								bind:value={beeminderConfig.hypothesisGoal}
+								oninput={debounce(() => checkGoal(beeminderConfig.hypothesisGoal, 'goalCheckResult'), 500)}
 								class="w-full p-3 pr-10 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
 								placeholder="your-goal-slug"
 							/>

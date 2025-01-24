@@ -13,7 +13,7 @@
 	let beeminderConfig: BeeminderConfig = {
 		username: '',
 		authToken: '',
-		selectedGoal: '',
+		hypothesisGoal: '',
 		observationGoal: ''
 	};
 

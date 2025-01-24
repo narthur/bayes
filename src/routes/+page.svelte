@@ -63,10 +63,10 @@
 		newHypothesis = { name: '', description: '', priorProbability: 0.5 };
 
 		// Send datapoint to Beeminder if configured
-		if (beeminderConfig?.selectedGoal) {
+		if (beeminderConfig?.hypothesisGoal) {
 			try {
 				const service = new BeeminderService(beeminderConfig);
-				await service.createDatapoint(beeminderConfig.selectedGoal, {
+				await service.createDatapoint(beeminderConfig.hypothesisGoal, {
 					value: 1,
 					comment: `Created hypothesis: ${hypothesis.name}`,
 					requestid: hypothesis.id
