@@ -76,24 +76,54 @@
 									</div>
 								{:else}
 									{#each filteredHypotheses as hypothesis}
-										<a
-											href="/hypothesis/{hypothesis.id}"
-											class="block px-4 py-2 hover:bg-slate-50 transition-colors"
-										>
-											<div class="text-sm font-medium text-slate-800">
-												{hypothesis.name}
-											</div>
-											{#if hypothesis.description}
-												<div class="text-xs text-slate-500 truncate mt-0.5">
-													{hypothesis.description}
+										<div>
+											<a
+												href="/hypothesis/{hypothesis.id}"
+												class="block px-4 py-2 hover:bg-slate-50 transition-colors"
+											>
+												<div class="text-sm font-medium text-slate-800">
+													{hypothesis.name}
+												</div>
+												{#if hypothesis.description}
+													<div class="text-xs text-slate-500 truncate mt-0.5">
+														{hypothesis.description}
+													</div>
+												{/if}
+												<div class="flex items-center gap-3 mt-1 text-xs text-slate-400">
+													<span>{hypothesis.observations.length} observations</span>
+													<span>•</span>
+													<span>Current: {formatProbability(calculatePosteriorProbability(hypothesis))}</span>
+												</div>
+											</a>
+											{#if hypothesis.observations.some(o => 
+												o.description.toLowerCase().includes($searchQuery.toLowerCase()) ||
+												(o.notes && o.notes.toLowerCase().includes($searchQuery.toLowerCase()))
+											)}
+												<div class="border-t border-slate-100 mx-4">
+													{#each hypothesis.observations.filter(o => 
+														o.description.toLowerCase().includes($searchQuery.toLowerCase()) ||
+														(o.notes && o.notes.toLowerCase().includes($searchQuery.toLowerCase()))
+													) as observation}
+														<a 
+															href="/hypothesis/{hypothesis.id}"
+															class="block py-2 px-4 hover:bg-slate-50 transition-colors"
+														>
+															<div class="text-xs text-slate-400 mb-0.5">
+																Observation • {new Date(observation.timestamp).toLocaleDateString()}
+															</div>
+															<div class="text-sm text-slate-600">
+																{observation.description}
+															</div>
+															{#if observation.notes}
+																<div class="text-xs text-slate-500 truncate mt-0.5">
+																	{observation.notes}
+																</div>
+															{/if}
+														</a>
+													{/each}
 												</div>
 											{/if}
-											<div class="flex items-center gap-3 mt-1 text-xs text-slate-400">
-												<span>{hypothesis.observations.length} observations</span>
-												<span>•</span>
-												<span>Current: {formatProbability(calculatePosteriorProbability(hypothesis))}</span>
-											</div>
-										</a>
+										</div>
 									{/each}
 								{/if}
 							</div>
