@@ -36,6 +36,12 @@ export interface ProbabilityPoint {
 export interface BeeminderConfig {
   username: string;
   authToken: string;
+  selectedGoal?: string;
+}
+
+export interface BeeminderGoal {
+  slug: string;
+  title: string;
 }
 
 export interface BeeminderDatapoint {

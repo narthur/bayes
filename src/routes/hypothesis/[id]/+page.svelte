@@ -338,7 +338,6 @@
 											for="edit-observation-notes">Notes</label
 										>
 										<AutoResizeTextarea
-											id="edit-observation-notes"
 											bind:value={editingObservation.notes}
 											className="w-full p-2 border border-slate-300 rounded-md"
 											placeholder="Add notes (supports markdown)..."
@@ -393,7 +392,9 @@
 											</button>
 											<button
 												on:click={() => {
-													editObservation(editingObservation);
+													if (editingObservation) {
+														editObservation(editingObservation);
+													}
 													editingObservation = null;
 												}}
 												class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-700 shadow-sm"
@@ -414,7 +415,7 @@
 												class="flex gap-2 shrink-0 pt-0.5 flex gap-1 opacity-0 group-hover:opacity-100 transition-all"
 											>
 												<button
-													on:click={() => (editingObservation = { ...observation })}
+													on:click={() => (editingObservation = { ...observation, notes: observation.notes || '' })}
 													class="p-1 text-slate-400 hover:text-indigo-600 transition-colors"
 													title="Edit observation"
 													aria-label="Edit observation"

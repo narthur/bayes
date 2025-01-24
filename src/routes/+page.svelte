@@ -45,7 +45,10 @@
 			name: newHypothesis.name,
 			description: newHypothesis.description,
 			priorProbability: newHypothesis.priorProbability,
-			observations: []
+			observations: [],
+			tags: [],
+			createdAt: Date.now(),
+			updatedAt: Date.now()
 		};
 
 		hypotheses = [...hypotheses, hypothesis];
