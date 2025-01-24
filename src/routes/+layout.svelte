@@ -36,14 +36,6 @@
 	<nav class="bg-white border-b border-slate-200">
 		<div class="max-w-4xl mx-auto px-4">
 			<div class="flex items-center justify-between h-16">
-				<div class="flex items-center">
-					<a
-						href="/"
-						class="text-xl font-serif text-slate-800 hover:text-indigo-600 transition-colors"
-					>
-						Bayes
-					</a>
-				</div>
 				<div class="flex items-center justify-between flex-1">
 					<a
 						href="/"
