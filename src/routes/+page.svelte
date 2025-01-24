@@ -8,8 +8,11 @@
 		deleteHypothesis,
 		duplicateHypothesis
 	} from '$lib/storage';
+	import { BeeminderService } from '$lib/beeminder';
+	import type { BeeminderConfig } from '$lib/types';
 
 	let hypotheses: Hypothesis[] = [];
+	let beeminderConfig: BeeminderConfig;
 	let searchQuery = '';
 	let newHypothesis = {
 		name: '',
@@ -35,9 +38,13 @@
 
 	onMount(() => {
 		hypotheses = loadHypotheses();
+		const stored = localStorage.getItem('beeminder-config');
+		if (stored) {
+			beeminderConfig = JSON.parse(stored);
+		}
 	});
 
-	function addHypothesis() {
+	async function addHypothesis() {
 		if (!newHypothesis.name) return;
 
 		const hypothesis: Hypothesis = {
@@ -54,6 +61,20 @@
 		hypotheses = [...hypotheses, hypothesis];
 		saveHypotheses(hypotheses);
 		newHypothesis = { name: '', description: '', priorProbability: 0.5 };
+
+		// Send datapoint to Beeminder if configured
+		if (beeminderConfig?.selectedGoal) {
+			try {
+				const service = new BeeminderService(beeminderConfig);
+				await service.createDatapoint(beeminderConfig.selectedGoal, {
+					value: 1,
+					comment: `Created hypothesis: ${hypothesis.name}`,
+					requestid: hypothesis.id
+				});
+			} catch (error) {
+				console.error('Failed to send datapoint to Beeminder:', error);
+			}
+		}
 	}
 
 	function formatProbability(prob: number): string {

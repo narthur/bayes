@@ -54,3 +54,10 @@ A web application for applying Bayesian reasoning to everyday life. Track hypoth
 - Ensure proper typing for all components and functions
 - Handle empty states and loading states
 - Preserve user data during updates
+
+## Integrations
+### Beeminder
+- Sends datapoints to configured goals when new hypotheses or observations are created
+- Configured in settings page with username, auth token, and goal slugs
+- Validates goal slugs before saving
+- Uses requestid to prevent duplicate datapoints (hypothesis.id or observation.id)

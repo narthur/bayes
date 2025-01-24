@@ -6,8 +6,16 @@
 	import { calculatePosteriorProbability } from '$lib/bayes';
 	import { saveHypotheses, loadHypotheses } from '$lib/storage';
 	import { marked } from 'marked';
+	import { BeeminderService } from '$lib/beeminder';
+	import type { BeeminderConfig } from '$lib/types';
 
 	export let data: { hypothesis: Hypothesis };
+	let beeminderConfig: BeeminderConfig = {
+		username: '',
+		authToken: '',
+		selectedGoal: '',
+		observationGoal: ''
+	};
 
 	let hypothesis = data.hypothesis;
 
@@ -19,7 +27,7 @@
 	};
 	let showLikelihoodHelp = false;
 
-	function addObservation() {
+	async function addObservation() {
 		if (!newObservation.description) return;
 
 		const observation: Observation = {
@@ -44,6 +52,20 @@
 			probabilityGivenTrue: 0.5,
 			probabilityGivenFalse: 0.5
 		};
+
+		// Send datapoint to Beeminder if configured
+		if (beeminderConfig?.observationGoal) {
+			try {
+				const service = new BeeminderService(beeminderConfig);
+				await service.createDatapoint(beeminderConfig.observationGoal, {
+					value: 1,
+					comment: `Added observation to "${hypothesis.name}": ${observation.description}`,
+					requestid: observation.id
+				});
+			} catch (error) {
+				console.error('Failed to send datapoint to Beeminder:', error);
+			}
+		}
 	}
 
 	function deleteObservation(observationId: string) {
