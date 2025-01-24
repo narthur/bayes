@@ -149,22 +149,7 @@
 			</div>
 		</div>
 
-		<div class="mb-8 flex justify-center">
-			<button
-				on:click={() => (showNewEvidenceModal = true)}
-				class="px-6 py-3 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors font-medium flex items-center gap-2"
-			>
-				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 4v16m8-8H4"
-					/>
-				</svg>
-				Add New Evidence
-			</button>
-		</div>
+
 
 		<Modal
 			open={showNewEvidenceModal}
@@ -181,7 +166,23 @@
 		<!-- List of observations -->
 		{#if hypothesis.observations.length > 0}
 			<div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
-				<h2 class="text-2xl font-serif text-slate-700 mb-6">Evidence Timeline</h2>
+				<div class="flex items-center justify-between mb-6">
+					<h2 class="text-2xl font-serif text-slate-700">Evidence Timeline</h2>
+					<button
+						on:click={() => (showNewEvidenceModal = true)}
+						class="px-4 py-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-md transition-colors font-medium flex items-center gap-2 border border-emerald-200"
+					>
+						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M12 4v16m8-8H4"
+							/>
+						</svg>
+						Add New Evidence
+					</button>
+				</div>
 				<div class="space-y-4">
 					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}<div
 							class="group p-6 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors shadow-sm hover:shadow-md"
