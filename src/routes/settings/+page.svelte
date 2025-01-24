@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { onMount } from 'svelte';
 	import type { BeeminderConfig } from '$lib/types';
 	import { loadHypotheses, saveHypotheses } from '$lib/storage';
 	import { BeeminderService } from '$lib/beeminder';
 
 	// Debounce function
-	function debounce<T extends (...args: any[]) => any>(
+	function debounce<T extends (...args: unknown[]) => unknown>(
 		fn: T,
 		wait: number
 	): (...args: Parameters<T>) => void {
@@ -70,7 +70,7 @@
 					observationGoalCheckResult = '✗ Goal not found';
 				}
 			}
-		} catch (error) {
+		} catch {
 			if (resultVar === 'goalCheckResult') {
 				goalCheckResult = '✗ Failed to check goal';
 			} else {
@@ -101,7 +101,7 @@
 					observationGoalCheckResult = '✗ Goal not found';
 				}
 			}
-		} catch (error) {
+		} catch {
 			if (resultVar === 'goalCheckResult') {
 				goalCheckResult = '✗ Failed to check goal';
 			} else {
@@ -214,7 +214,11 @@
 						</p>
 						<button
 							onclick={() => {
-								if (confirm('Are you sure you want to delete all your data? This action cannot be undone.')) {
+								if (
+									confirm(
+										'Are you sure you want to delete all your data? This action cannot be undone.'
+									)
+								) {
 									localStorage.clear();
 									beeminderConfig = {
 										username: '',
@@ -282,68 +286,150 @@
 					<div>
 						<label for="selected-goal" class="block text-sm font-medium text-slate-700 mb-2"
 							>New Hypothesis Goal Slug</label
-						>						<div class="relative">
+						>
+						<div class="relative">
 							<input
 								id="selected-goal"
 								type="text"
 								bind:value={beeminderConfig.selectedGoal}
-								oninput={debounce(() => checkGoal(beeminderConfig.selectedGoal, 'goalCheckResult'), 500)}
+								oninput={debounce(
+									() => checkGoal(beeminderConfig.selectedGoal, 'goalCheckResult'),
+									500
+								)}
 								class="w-full p-3 pr-10 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
 								placeholder="your-goal-slug"
 							/>
 							<div class="absolute inset-y-0 right-0 flex items-center pr-3">
 								{#if isCheckingGoal}
-									<svg class="animate-spin h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-										<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-										<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+									<svg
+										class="animate-spin h-5 w-5 text-slate-400"
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+									>
+										<circle
+											class="opacity-25"
+											cx="12"
+											cy="12"
+											r="10"
+											stroke="currentColor"
+											stroke-width="4"
+										></circle>
+										<path
+											class="opacity-75"
+											fill="currentColor"
+											d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+										></path>
 									</svg>
 								{:else if goalCheckResult.startsWith('✓')}
-									<svg class="h-5 w-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+									<svg
+										class="h-5 w-5 text-emerald-500"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M5 13l4 4L19 7"
+										></path>
 									</svg>
 								{:else if goalCheckResult.startsWith('✗')}
-									<svg class="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+									<svg
+										class="h-5 w-5 text-red-500"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M6 18L18 6M6 6l12 12"
+										></path>
 									</svg>
 								{/if}
 							</div>
 						</div>
 						<p class="mt-2 text-sm text-slate-500">
-							Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are created
+							Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are
+							created
 						</p>
 					</div>
 
 					<div>
 						<label for="observation-goal" class="block text-sm font-medium text-slate-700 mb-2"
 							>New Observation Goal Slug</label
-						>						<div class="relative">
+						>
+						<div class="relative">
 							<input
 								id="observation-goal"
 								type="text"
 								bind:value={beeminderConfig.observationGoal}
-								oninput={debounce(() => checkGoal(beeminderConfig.observationGoal, 'observationGoalCheckResult'), 500)}
+								oninput={debounce(
+									() => checkGoal(beeminderConfig.observationGoal, 'observationGoalCheckResult'),
+									500
+								)}
 								class="w-full p-3 pr-10 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
 								placeholder="observation-goal-slug"
 							/>
 							<div class="absolute inset-y-0 right-0 flex items-center pr-3">
 								{#if isCheckingObservationGoal}
-									<svg class="animate-spin h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-										<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-										<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+									<svg
+										class="animate-spin h-5 w-5 text-slate-400"
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+									>
+										<circle
+											class="opacity-25"
+											cx="12"
+											cy="12"
+											r="10"
+											stroke="currentColor"
+											stroke-width="4"
+										></circle>
+										<path
+											class="opacity-75"
+											fill="currentColor"
+											d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+										></path>
 									</svg>
 								{:else if observationGoalCheckResult.startsWith('✓')}
-									<svg class="h-5 w-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+									<svg
+										class="h-5 w-5 text-emerald-500"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M5 13l4 4L19 7"
+										></path>
 									</svg>
 								{:else if observationGoalCheckResult.startsWith('✗')}
-									<svg class="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+									<svg
+										class="h-5 w-5 text-red-500"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M6 18L18 6M6 6l12 12"
+										></path>
 									</svg>
 								{/if}
 							</div>
 						</div>
 						<p class="mt-2 text-sm text-slate-500">
-							Enter the slug of the Beeminder goal to send datapoints to when new observations are added
+							Enter the slug of the Beeminder goal to send datapoints to when new observations are
+							added
 						</p>
 					</div>
 
