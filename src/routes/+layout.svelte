@@ -1,6 +1,35 @@
 <script lang="ts">
 	import '../app.css';
 	import { searchQuery } from '$lib';
+	import { loadHypotheses } from '$lib/storage';
+	import { calculatePosteriorProbability } from '$lib/bayes';
+	import type { Hypothesis } from '$lib/types';
+	import { onMount } from 'svelte';
+
+	let hypotheses: Hypothesis[] = [];
+
+	onMount(() => {
+		hypotheses = loadHypotheses();
+	});
+
+	$: filteredHypotheses = hypotheses.filter((h) => {
+		if (!$searchQuery.trim()) return true;
+		
+		const query = $searchQuery.toLowerCase();
+		const matchName = h.name.toLowerCase().includes(query);
+		const matchDescription = h.description.toLowerCase().includes(query);
+		const matchObservations = h.observations.some(
+			(o) =>
+				o.description.toLowerCase().includes(query) ||
+				(o.notes && o.notes.toLowerCase().includes(query))
+		);
+
+		return matchName || matchDescription || matchObservations;
+	});
+
+	function formatProbability(prob: number): string {
+		return (prob * 100).toFixed(1) + '%';
+	}
 </script>
 
 <div class="min-h-screen flex flex-col">
@@ -38,6 +67,37 @@
 								/>
 							</svg>
 						</div>
+						
+						{#if $searchQuery.trim() && hypotheses}
+							<div class="absolute left-0 right-0 mt-2 py-2 bg-white rounded-lg shadow-lg border border-slate-200 max-h-96 overflow-y-auto z-50">
+								{#if filteredHypotheses.length === 0}
+									<div class="px-4 py-2 text-sm text-slate-500">
+										No hypotheses match your search
+									</div>
+								{:else}
+									{#each filteredHypotheses as hypothesis}
+										<a
+											href="/hypothesis/{hypothesis.id}"
+											class="block px-4 py-2 hover:bg-slate-50 transition-colors"
+										>
+											<div class="text-sm font-medium text-slate-800">
+												{hypothesis.name}
+											</div>
+											{#if hypothesis.description}
+												<div class="text-xs text-slate-500 truncate mt-0.5">
+													{hypothesis.description}
+												</div>
+											{/if}
+											<div class="flex items-center gap-3 mt-1 text-xs text-slate-400">
+												<span>{hypothesis.observations.length} observations</span>
+												<span>•</span>
+												<span>Current: {formatProbability(calculatePosteriorProbability(hypothesis))}</span>
+											</div>
+										</a>
+									{/each}
+								{/if}
+							</div>
+						{/if}
 					</div>
 					<a
 						href="/"
