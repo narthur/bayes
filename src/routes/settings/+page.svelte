@@ -58,6 +58,8 @@
 	async function saveSettings(e: Event) {
 		e.preventDefault();
 		localStorage.setItem('beeminder-config', JSON.stringify(beeminderConfig));
+		// Show feedback to user
+		alert('Settings saved successfully!');
 	}
 </script>
 
