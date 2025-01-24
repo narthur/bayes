@@ -9,7 +9,10 @@
 		duplicateHypothesis
 	} from '$lib/storage';
 	import NewHypothesisForm from '$lib/components/NewHypothesisForm.svelte';
+	import Modal from '$lib/components/Modal.svelte';
 	import type { BeeminderConfig } from '$lib/types';
+
+	let showNewHypothesisModal = false;
 
 	let hypotheses: Hypothesis[] = [];
 	let beeminderConfig: BeeminderConfig;
@@ -56,7 +59,34 @@
 			</p>
 		</div>
 
-		<NewHypothesisForm {hypotheses} {beeminderConfig} />
+		<div class="mb-8 flex justify-center">
+			<button
+				on:click={() => (showNewHypothesisModal = true)}
+				class="px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium flex items-center gap-2"
+			>
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 4v16m8-8H4"
+					/>
+				</svg>
+				Create New Hypothesis
+			</button>
+		</div>
+
+		<Modal
+			open={showNewHypothesisModal}
+			title="Create New Hypothesis"
+			onClose={() => (showNewHypothesisModal = false)}
+		>
+			<NewHypothesisForm
+				{hypotheses}
+				{beeminderConfig}
+				on:hypothesisCreated={() => (showNewHypothesisModal = false)}
+			/>
+		</Modal>
 
 		<!-- List of hypotheses -->
 		<div class="mb-12 p-8 bg-white rounded-lg shadow-sm border border-slate-200">
