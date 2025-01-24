@@ -1,10 +1,41 @@
 <script lang="ts">
 	import '../app.css';
 	import { searchQuery } from '$lib';
+	import { onMount } from 'svelte';
 	import { loadHypotheses } from '$lib/storage';
 	import { calculatePosteriorProbability } from '$lib/bayes';
 	import type { Hypothesis } from '$lib/types';
-	import { onMount } from 'svelte';
+
+	// Dark mode state
+	let darkMode = false;
+
+	onMount(() => {
+		// Check for system preference or stored preference
+		const stored = localStorage.getItem('darkMode');
+		if (stored) {
+			darkMode = JSON.parse(stored);
+		} else {
+			darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+		}
+		updateDarkMode(darkMode);
+		
+		// Load hypotheses
+		hypotheses = loadHypotheses();
+	});
+
+	function toggleDarkMode() {
+		darkMode = !darkMode;
+		localStorage.setItem('darkMode', JSON.stringify(darkMode));
+		updateDarkMode(darkMode);
+	}
+
+	function updateDarkMode(isDark: boolean) {
+		if (isDark) {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+		}
+	}
 
 	let hypotheses: Hypothesis[] = [];
 
@@ -33,13 +64,13 @@
 </script>
 
 <div class="min-h-screen flex flex-col">
-	<nav class="bg-white border-b border-slate-200">
+	<nav class="bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800">
 		<div class="max-w-4xl mx-auto px-4">
 			<div class="flex items-center justify-between h-16">
 				<div class="flex items-center justify-between flex-1">
 					<a
 						href="/"
-						class="text-xl font-serif text-slate-800 hover:text-indigo-600 transition-colors"
+						class="text-xl font-serif text-slate-800 hover:text-indigo-600 transition-colors dark:text-slate-200"
 					>
 						Bayes
 					</a>
@@ -47,7 +78,7 @@
 					<div class="flex items-center gap-6">
 						<a
 							href="/"
-							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2"
+							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
 						>
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -95,12 +126,38 @@
 						</a>
 					</div>
 
-					<div class="relative">
-						<input
-							type="search"
-							bind:value={$searchQuery}
-							placeholder="Search hypotheses..."
-							class="w-64 px-4 py-2 pl-10 bg-white border border-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300"
+					<div class="flex items-center gap-4">
+						<button
+							on:click={toggleDarkMode}
+							class="p-2 text-slate-600 hover:text-indigo-600 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+							title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+						>
+							{#if darkMode}
+								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+									/>
+								</svg>
+							{:else}
+								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+									/>
+								</svg>
+							{/if}
+						</button>
+						<div class="relative">
+							<input
+								type="search"
+								bind:value={$searchQuery}
+								placeholder="Search hypotheses..."
+								class="w-64 px-4 py-2 pl-10 bg-white border border-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:placeholder-slate-400"
 						/>
 						<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 							<svg

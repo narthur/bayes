@@ -9,6 +9,7 @@ A web application for applying Bayesian reasoning to everyday life. Track hypoth
 - Static site deployment
 - TypeScript for type safety
 - TailwindCSS for styling
+- Dark mode support with system preference detection and user toggle
 
 ## Page Structure
 - `/`: Marketing landing page with feature overview
