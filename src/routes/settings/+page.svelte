@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { BeeminderConfig, BeeminderGoal } from '$lib/types';
+	import type { BeeminderConfig } from '$lib/types';
 	import { loadHypotheses, saveHypotheses } from '$lib/storage';
 	import { BeeminderService } from '$lib/beeminder';
 
 	let beeminderConfig: BeeminderConfig = {
 		username: '',
 		authToken: '',
-		selectedGoal: ''
+		selectedGoal: '',
+		observationGoal: ''
 	};
 	let goalCheckResult = '';
+	let observationGoalCheckResult = '';
 
 	onMount(() => {
 		const stored = localStorage.getItem('beeminder-config');
@@ -18,8 +20,11 @@
 		}
 	});
 
-	async function checkGoal() {
-		if (!beeminderConfig.username || !beeminderConfig.authToken || !beeminderConfig.selectedGoal) {
+	async function checkGoal(
+		goalSlug: string | undefined,
+		resultVar: 'goalCheckResult' | 'observationGoalCheckResult'
+	) {
+		if (!beeminderConfig.username || !beeminderConfig.authToken || !goalSlug) {
 			goalCheckResult = 'Please fill in all fields first';
 			return;
 		}
@@ -27,14 +32,26 @@
 		const service = new BeeminderService(beeminderConfig);
 		try {
 			const goals = await service.getGoals();
-			const goal = goals.find(g => g.slug === beeminderConfig.selectedGoal);
+			const goal = goals.find((g) => g.slug === goalSlug);
 			if (goal) {
-				goalCheckResult = `✓ Found goal "${goal.slug}"`;
+				if (resultVar === 'goalCheckResult') {
+					goalCheckResult = `✓ Found goal "${goal.slug}"`;
+				} else {
+					observationGoalCheckResult = `✓ Found goal "${goal.slug}"`;
+				}
 			} else {
-				goalCheckResult = '✗ Goal not found';
+				if (resultVar === 'goalCheckResult') {
+					goalCheckResult = '✗ Goal not found';
+				} else {
+					observationGoalCheckResult = '✗ Goal not found';
+				}
 			}
 		} catch (error) {
-			goalCheckResult = '✗ Failed to check goal';
+			if (resultVar === 'goalCheckResult') {
+				goalCheckResult = '✗ Failed to check goal';
+			} else {
+				observationGoalCheckResult = '✗ Failed to check goal';
+			}
 		}
 	}
 
@@ -115,7 +132,9 @@
 									const reader = new FileReader();
 									reader.onload = (event) => {
 										try {
-											const importedHypotheses = JSON.parse(event.target?.result as string || '[]');
+											const importedHypotheses = JSON.parse(
+												(event.target?.result as string) || '[]'
+											);
 											if (confirm('This will replace all your current hypotheses. Are you sure?')) {
 												saveHypotheses(importedHypotheses);
 												alert('Data imported successfully!');
@@ -172,7 +191,7 @@
 
 					<div>
 						<label for="selected-goal" class="block text-sm font-medium text-slate-700 mb-2"
-							>Beeminder Goal Slug</label
+							>New Hypothesis Goal Slug</label
 						>
 						<div class="flex gap-2">
 							<input
@@ -184,19 +203,61 @@
 							/>
 							<button
 								type="button"
-								onclick={checkGoal}
+								onclick={() => checkGoal(beeminderConfig.selectedGoal, 'goalCheckResult')}
 								class="px-4 py-2 text-sm font-medium text-white bg-slate-600 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
 							>
 								Check
 							</button>
 						</div>
 						{#if goalCheckResult}
-							<p class="mt-2 text-sm" class:text-emerald-600={goalCheckResult.startsWith('✓')} class:text-red-600={goalCheckResult.startsWith('✗')}>
+							<p
+								class="mt-2 text-sm"
+								class:text-emerald-600={goalCheckResult.startsWith('✓')}
+								class:text-red-600={goalCheckResult.startsWith('✗')}
+							>
 								{goalCheckResult}
 							</p>
 						{:else}
 							<p class="mt-2 text-sm text-slate-500">
-								Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are created
+								Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are
+								created
+							</p>
+						{/if}
+					</div>
+
+					<div>
+						<label for="observation-goal" class="block text-sm font-medium text-slate-700 mb-2"
+							>New Observation Goal Slug</label
+						>
+						<div class="flex gap-2">
+							<input
+								id="observation-goal"
+								type="text"
+								bind:value={beeminderConfig.observationGoal}
+								class="flex-1 p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+								placeholder="observation-goal-slug"
+							/>
+							<button
+								type="button"
+								onclick={() =>
+									checkGoal(beeminderConfig.observationGoal, 'observationGoalCheckResult')}
+								class="px-4 py-2 text-sm font-medium text-white bg-slate-600 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+							>
+								Check
+							</button>
+						</div>
+						{#if observationGoalCheckResult}
+							<p
+								class="mt-2 text-sm"
+								class:text-emerald-600={observationGoalCheckResult.startsWith('✓')}
+								class:text-red-600={observationGoalCheckResult.startsWith('✗')}
+							>
+								{observationGoalCheckResult}
+							</p>
+						{:else}
+							<p class="mt-2 text-sm text-slate-500">
+								Enter the slug of the Beeminder goal to send datapoints to when new observations are
+								added
 							</p>
 						{/if}
 					</div>

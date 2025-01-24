@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   
-  export let value: string;
+  export let value: string = '';
   export let placeholder = '';
   export let className = '';
   export let autofocus = false;

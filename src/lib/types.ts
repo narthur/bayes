@@ -37,6 +37,7 @@ export interface BeeminderConfig {
   username: string;
   authToken: string;
   selectedGoal?: string;
+  observationGoal?: string;
 }
 
 export interface BeeminderGoal {
