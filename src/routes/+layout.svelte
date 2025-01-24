@@ -253,14 +253,14 @@
 		<slot />
 	</div>
 
-	<footer class="bg-white border-t border-slate-200 py-8">
+	<footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-8">
 		<div class="max-w-4xl mx-auto px-4">
-			<div class="flex flex-wrap justify-center gap-4 text-sm text-slate-500">
+			<div class="flex flex-wrap justify-center gap-4 text-sm text-slate-500 dark:text-slate-400">
 				<a
 					href="https://nathanarthur.com"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="hover:text-indigo-600 transition-colors flex items-center gap-1 whitespace-nowrap"
+					class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1 whitespace-nowrap"
 				>
 					<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -272,12 +272,12 @@
 					</svg>
 					nathanarthur.com
 				</a>
-				<span class="text-slate-300">•</span>
+				<span class="text-slate-300 dark:text-slate-600">•</span>
 				<a
 					href="https://pinepeakdigital.com"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="hover:text-indigo-600 transition-colors flex items-center gap-1 whitespace-nowrap"
+					class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1 whitespace-nowrap"
 				>
 					<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -289,12 +289,12 @@
 					</svg>
 					pinepeakdigital.com
 				</a>
-				<span class="text-slate-300">•</span>
+				<span class="text-slate-300 dark:text-slate-600">•</span>
 				<a
 					href="https://taskratchet.com"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="hover:text-indigo-600 transition-colors flex items-center gap-1 whitespace-nowrap"
+					class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1 whitespace-nowrap"
 				>
 					<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -306,12 +306,12 @@
 					</svg>
 					TaskRatchet
 				</a>
-				<span class="text-slate-300">•</span>
+				<span class="text-slate-300 dark:text-slate-600">•</span>
 				<a
 					href="https://codebuff.com/referrals/ref-6d348d54-80f1-4155-903b-2cc6c57dd12f"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="hover:text-indigo-600 transition-colors flex items-center gap-1 whitespace-nowrap"
+					class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1 whitespace-nowrap"
 				>
 					<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -323,12 +323,12 @@
 					</svg>
 					Built with Codebuff
 				</a>
-				<span class="text-slate-300">•</span>
+				<span class="text-slate-300 dark:text-slate-600">•</span>
 				<a
 					href="https://ko-fi.com/narthur"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="hover:text-indigo-600 transition-colors flex items-center gap-1 whitespace-nowrap"
+					class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1 whitespace-nowrap"
 				>
 					<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
