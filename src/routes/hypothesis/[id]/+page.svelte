@@ -415,7 +415,11 @@
 												class="flex gap-2 shrink-0 pt-0.5 flex gap-1 opacity-0 group-hover:opacity-100 transition-all"
 											>
 												<button
-													on:click={() => (editingObservation = { ...observation, notes: observation.notes || '' })}
+													on:click={() =>
+														(editingObservation = {
+															...observation,
+															notes: observation.notes || ''
+														})}
 													class="p-1 text-slate-400 hover:text-indigo-600 transition-colors"
 													title="Edit observation"
 													aria-label="Edit observation"
@@ -501,6 +505,7 @@
 											<div
 												class="prose prose-sm prose-slate max-w-none border-t border-slate-200 pt-4 mt-4"
 											>
+												<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 												{@html marked(observation.notes)}
 											</div>
 										{/if}
