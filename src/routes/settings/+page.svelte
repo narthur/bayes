@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { BeeminderConfig } from '$lib/types';
+	import { loadHypotheses, saveHypotheses } from '$lib/storage';
 
 	let beeminderConfig: BeeminderConfig = {
 		username: '',
@@ -14,7 +15,8 @@
 		}
 	});
 
-	function saveSettings() {
+	function saveSettings(e: Event) {
+		e.preventDefault();
 		localStorage.setItem('beeminder-config', JSON.stringify(beeminderConfig));
 	}
 </script>
@@ -36,7 +38,7 @@
 							Download your hypotheses and observations as a JSON file for backup or transfer.
 						</p>
 						<button
-							on:click={() => {
+							onclick={() => {
 								const data = JSON.stringify(loadHypotheses(), null, 2);
 								const blob = new Blob([data], { type: 'application/json' });
 								const url = URL.createObjectURL(blob);
@@ -83,26 +85,24 @@
 								type="file"
 								accept="application/json"
 								class="hidden"
-								on:change={(e) => {
-									const file = e.target.files?.[0];
+								onchange={(e: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
+									const file = e.currentTarget.files?.[0];
 									if (!file) return;
 
 									const reader = new FileReader();
 									reader.onload = (event) => {
 										try {
 											const importedHypotheses = JSON.parse(event.target.result as string);
-											if (
-												confirm('This will replace all your current hypotheses. Are you sure?')
-											) {
+											if (confirm('This will replace all your current hypotheses. Are you sure?')) {
 												saveHypotheses(importedHypotheses);
 												alert('Data imported successfully!');
 											}
-										} catch (error) {
+										} catch {
 											alert('Invalid JSON file');
 										}
 									};
 									reader.readAsText(file);
-									e.target.value = ''; // Reset input
+									e.currentTarget.value = ''; // Reset input
 								}}
 							/>
 						</label>
@@ -112,48 +112,49 @@
 
 			<div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
 				<h2 class="text-2xl font-serif text-slate-700 mb-6">Beeminder Integration</h2>
-			<form on:submit|preventDefault={saveSettings} class="space-y-6">
-				<div>
-					<label for="username" class="block text-sm font-medium text-slate-700 mb-2"
-						>Beeminder Username</label
-					>
-					<input
-						id="username"
-						type="text"
-						bind:value={beeminderConfig.username}
-						class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
-						placeholder="your-username"
-					/>
-				</div>
-
-				<div>
-					<label for="auth-token" class="block text-sm font-medium text-slate-700 mb-2"
-						>Auth Token</label
-					>
-					<input
-						id="auth-token"
-						type="password"
-						bind:value={beeminderConfig.authToken}
-						class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
-						placeholder="••••••••••••••••"
-					/>
-					<p class="mt-2 text-sm text-slate-500">
-						Find your auth token in your <a
-							href="https://www.beeminder.com/settings/account#account-permissions"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="text-indigo-600 hover:text-indigo-700">Beeminder account settings</a
+				<form onsubmit={saveSettings} class="space-y-6">
+					<div>
+						<label for="username" class="block text-sm font-medium text-slate-700 mb-2"
+							>Beeminder Username</label
 						>
-					</p>
-				</div>
+						<input
+							id="username"
+							type="text"
+							bind:value={beeminderConfig.username}
+							class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+							placeholder="your-username"
+						/>
+					</div>
 
-				<button
-					type="submit"
-					class="w-full py-3 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium"
-				>
-					Save Settings
-				</button>
-			</form>
+					<div>
+						<label for="auth-token" class="block text-sm font-medium text-slate-700 mb-2"
+							>Auth Token</label
+						>
+						<input
+							id="auth-token"
+							type="password"
+							bind:value={beeminderConfig.authToken}
+							class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+							placeholder="••••••••••••••••"
+						/>
+						<p class="mt-2 text-sm text-slate-500">
+							Find your auth token in your <a
+								href="https://www.beeminder.com/settings/account#account-permissions"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="text-indigo-600 hover:text-indigo-700">Beeminder account settings</a
+							>
+						</p>
+					</div>
+
+					<button
+						type="submit"
+						class="w-full py-3 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium"
+					>
+						Save Settings
+					</button>
+				</form>
+			</div>
 		</div>
 	</div>
 </main>
