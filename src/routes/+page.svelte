@@ -17,20 +17,7 @@
 	let beeminderConfig: BeeminderConfig;
 	import { searchQuery } from '$lib';
 
-	$: filteredHypotheses = hypotheses.filter((h) => {
-		if (!$searchQuery.trim()) return true;
-	
-		const query = $searchQuery.toLowerCase();
-		const matchName = h.name.toLowerCase().includes(query);
-		const matchDescription = h.description.toLowerCase().includes(query);
-		const matchObservations = h.observations.some(
-			(o) =>
-				o.description.toLowerCase().includes(query) ||
-				(o.notes && o.notes.toLowerCase().includes(query))
-		);
 
-		return matchName || matchDescription || matchObservations;
-	});
 
 	onMount(() => {
 		hypotheses = loadHypotheses();
@@ -95,13 +82,9 @@
 				<div class="text-center py-12 bg-white rounded-lg border border-slate-200">
 					<p class="text-slate-600">No hypotheses yet. Create one above to get started!</p>
 				</div>
-			{:else if filteredHypotheses.length === 0}
-				<div class="text-center py-12 bg-white rounded-lg border border-slate-200">
-					<p class="text-slate-600">No hypotheses match your search.</p>
-				</div>
 			{:else}
 				<div class="space-y-3">
-					{#each filteredHypotheses as hypothesis}
+					{#each hypotheses as hypothesis}
 						<div class="group relative">
 							<a
 								href="/hypothesis/{hypothesis.id}"
