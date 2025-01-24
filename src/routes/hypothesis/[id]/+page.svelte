@@ -20,6 +20,9 @@
 	let hypothesis = data.hypothesis;
 
 	import NewEvidenceForm from '$lib/components/NewEvidenceForm.svelte';
+	import Modal from '$lib/components/Modal.svelte';
+
+	let showNewEvidenceModal = false;
 
 	function deleteObservation(observationId: string) {
 		hypothesis.observations = hypothesis.observations.filter((o) => o.id !== observationId);
@@ -146,7 +149,34 @@
 			</div>
 		</div>
 
-		<NewEvidenceForm {hypothesis} {beeminderConfig} />
+		<div class="mb-8 flex justify-center">
+			<button
+				on:click={() => (showNewEvidenceModal = true)}
+				class="px-6 py-3 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors font-medium flex items-center gap-2"
+			>
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 4v16m8-8H4"
+					/>
+				</svg>
+				Add New Evidence
+			</button>
+		</div>
+
+		<Modal
+			open={showNewEvidenceModal}
+			title="Add New Evidence"
+			onClose={() => (showNewEvidenceModal = false)}
+		>
+			<NewEvidenceForm
+				{hypothesis}
+				{beeminderConfig}
+				on:evidenceAdded={() => (showNewEvidenceModal = false)}
+			/>
+		</Modal>
 
 		<!-- List of observations -->
 		{#if hypothesis.observations.length > 0}

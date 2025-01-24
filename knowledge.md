@@ -27,6 +27,13 @@ A web application for applying Bayesian reasoning to everyday life. Track hypoth
 - Subtle transitions and hover states
 - Responsive design
 
+### Modal Accessibility
+- Use role="dialog" and aria-modal="true"
+- Add aria-labelledby pointing to modal title
+- Trap focus within modal when open
+- Support Escape key to close
+- Backdrop click handler needs role="presentation"
+
 ## Development Practices
 - Run `pnpm build` to validate changes
 - Fix all accessibility warnings

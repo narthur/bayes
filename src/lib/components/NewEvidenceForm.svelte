@@ -4,6 +4,9 @@
 	import AutoResizeTextarea from './AutoResizeTextarea.svelte';
 	import type { Hypothesis, Observation } from '$lib/types';
 	import { saveHypotheses, loadHypotheses } from '$lib/storage';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	export let hypothesis: Hypothesis;
 	export let beeminderConfig: BeeminderConfig;
@@ -54,6 +57,7 @@
 			} catch (error) {
 				console.error('Failed to send datapoint to Beeminder:', error);
 			}
+			dispatch('evidenceAdded');
 		}
 	}
 
