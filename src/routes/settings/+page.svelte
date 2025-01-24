@@ -1,12 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { BeeminderConfig } from '$lib/types';
+	import type { BeeminderConfig, BeeminderGoal } from '$lib/types';
 	import { loadHypotheses, saveHypotheses } from '$lib/storage';
+	import { BeeminderService } from '$lib/beeminder';
 
 	let beeminderConfig: BeeminderConfig = {
 		username: '',
-		authToken: ''
+		authToken: '',
+		selectedGoal: ''
 	};
+	let goalCheckResult = '';
 
 	onMount(() => {
 		const stored = localStorage.getItem('beeminder-config');
@@ -15,7 +18,27 @@
 		}
 	});
 
-	function saveSettings(e: Event) {
+	async function checkGoal() {
+		if (!beeminderConfig.username || !beeminderConfig.authToken || !beeminderConfig.selectedGoal) {
+			goalCheckResult = 'Please fill in all fields first';
+			return;
+		}
+
+		const service = new BeeminderService(beeminderConfig);
+		try {
+			const goals = await service.getGoals();
+			const goal = goals.find(g => g.slug === beeminderConfig.selectedGoal);
+			if (goal) {
+				goalCheckResult = `✓ Found goal "${goal.slug}"`;
+			} else {
+				goalCheckResult = '✗ Goal not found';
+			}
+		} catch (error) {
+			goalCheckResult = '✗ Failed to check goal';
+		}
+	}
+
+	async function saveSettings(e: Event) {
 		e.preventDefault();
 		localStorage.setItem('beeminder-config', JSON.stringify(beeminderConfig));
 	}
@@ -92,7 +115,7 @@
 									const reader = new FileReader();
 									reader.onload = (event) => {
 										try {
-											const importedHypotheses = JSON.parse(event.target.result as string);
+											const importedHypotheses = JSON.parse(event.target?.result as string || '[]');
 											if (confirm('This will replace all your current hypotheses. Are you sure?')) {
 												saveHypotheses(importedHypotheses);
 												alert('Data imported successfully!');
@@ -145,6 +168,37 @@
 								class="text-indigo-600 hover:text-indigo-700">Beeminder account settings</a
 							>
 						</p>
+					</div>
+
+					<div>
+						<label for="selected-goal" class="block text-sm font-medium text-slate-700 mb-2"
+							>Beeminder Goal Slug</label
+						>
+						<div class="flex gap-2">
+							<input
+								id="selected-goal"
+								type="text"
+								bind:value={beeminderConfig.selectedGoal}
+								class="flex-1 p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+								placeholder="your-goal-slug"
+							/>
+							<button
+								type="button"
+								onclick={checkGoal}
+								class="px-4 py-2 text-sm font-medium text-white bg-slate-600 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+							>
+								Check
+							</button>
+						</div>
+						{#if goalCheckResult}
+							<p class="mt-2 text-sm" class:text-emerald-600={goalCheckResult.startsWith('✓')} class:text-red-600={goalCheckResult.startsWith('✗')}>
+								{goalCheckResult}
+							</p>
+						{:else}
+							<p class="mt-2 text-sm text-slate-500">
+								Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are created
+							</p>
+						{/if}
 					</div>
 
 					<button
