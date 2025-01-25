@@ -32,3 +32,22 @@ export interface ProbabilityPoint {
   probability: number;
   observationId: string;
 }
+
+export interface BeeminderConfig {
+  username: string;
+  authToken: string;
+  hypothesisGoal?: string;
+  observationGoal?: string;
+}
+
+export interface BeeminderGoal {
+  slug: string;
+  title: string;
+}
+
+export interface BeeminderDatapoint {
+  value: number;
+  timestamp?: number;
+  comment?: string;
+  requestid?: string;
+}
