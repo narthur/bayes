@@ -12,12 +12,12 @@
 	let isChecking = false;
 
 	// Debounce function
-	function debounce<T extends (...args: unknown[]) => unknown>(
-		fn: T,
+	function debounce<T extends unknown[], R>(
+		fn: (...args: T) => R,
 		wait: number
-	): (...args: Parameters<T>) => void {
+	): (...args: T) => void {
 		let timeoutId: ReturnType<typeof setTimeout>;
-		return (...args: Parameters<T>) => {
+		return (...args: T) => {
 			clearTimeout(timeoutId);
 			timeoutId = setTimeout(() => fn(...args), wait);
 		};
@@ -36,7 +36,7 @@
 			const service = new BeeminderService(beeminderConfig);
 			const goals = await service.getGoals();
 			const goal = goals.find((g) => g.slug === goalSlug);
-			
+
 			if (goal) {
 				checkResult = `✓ Found goal "${goal.slug}"`;
 			} else {
@@ -58,8 +58,9 @@
 
 <div class="relative">
 	{#if label}
-		<label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2" for="goal-input"
-			>{label}</label
+		<label
+			class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
+			for="goal-input">{label}</label
 		>
 	{/if}
 	<input
@@ -70,7 +71,7 @@
 		class="w-full p-2 text-sm border border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md"
 		on:change
 	/>
-	<div class="absolute inset-y-0 right-0 flex items-center pr-3">
+	<div class="absolute top-1/2 -translate-y-1/2 right-0 pr-3">
 		{#if isChecking}
 			<svg
 				class="animate-spin h-5 w-5 text-slate-400"
@@ -78,13 +79,7 @@
 				fill="none"
 				viewBox="0 0 24 24"
 			>
-				<circle
-					class="opacity-25"
-					cx="12"
-					cy="12"
-					r="10"
-					stroke="currentColor"
-					stroke-width="4"
+				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
 				></circle>
 				<path
 					class="opacity-75"
@@ -94,11 +89,16 @@
 			</svg>
 		{:else if checkResult.startsWith('✓')}
 			<svg class="h-5 w-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"
+				></path>
 			</svg>
 		{:else if checkResult.startsWith('✗')}
 			<svg class="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M6 18L18 6M6 6l12 12"
 				></path>
 			</svg>
 		{/if}

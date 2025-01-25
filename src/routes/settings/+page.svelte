@@ -4,28 +4,12 @@
 	import { loadHypotheses, saveHypotheses } from '$lib/storage';
 	import BeeminderGoalInput from '$lib/components/BeeminderGoalInput.svelte';
 
-	// Debounce function
-	function debounce<T extends (...args: unknown[]) => unknown>(
-		fn: T,
-		wait: number
-	): (...args: Parameters<T>) => void {
-		let timeoutId: ReturnType<typeof setTimeout>;
-		return (...args: Parameters<T>) => {
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(() => fn(...args), wait);
-		};
-	}
-
 	let beeminderConfig: BeeminderConfig = {
 		username: '',
 		authToken: '',
 		hypothesisGoal: '',
 		observationGoal: ''
 	};
-	let goalCheckResult = '';
-	let observationGoalCheckResult = '';
-	let isCheckingGoal = false;
-	let isCheckingObservationGoal = false;
 
 	onMount(() => {
 		const stored = localStorage.getItem('beeminder-config');
@@ -33,82 +17,6 @@
 			beeminderConfig = JSON.parse(stored);
 		}
 	});
-
-	async function checkGoal(
-		goalSlug: string | undefined,
-		resultVar: 'goalCheckResult' | 'observationGoalCheckResult'
-	) {
-		if (resultVar === 'goalCheckResult') {
-			isCheckingGoal = true;
-		} else {
-			isCheckingObservationGoal = true;
-		}
-
-		try {
-			if (!beeminderConfig.username || !beeminderConfig.authToken || !goalSlug) {
-				if (resultVar === 'goalCheckResult') {
-					goalCheckResult = 'Please fill in all fields first';
-				} else {
-					observationGoalCheckResult = 'Please fill in all fields first';
-				}
-				return;
-			}
-
-			const service = new BeeminderService(beeminderConfig);
-			const goals = await service.getGoals();
-			const goal = goals.find((g) => g.slug === goalSlug);
-			if (goal) {
-				if (resultVar === 'goalCheckResult') {
-					goalCheckResult = `✓ Found goal "${goal.slug}"`;
-				} else {
-					observationGoalCheckResult = `✓ Found goal "${goal.slug}"`;
-				}
-			} else {
-				if (resultVar === 'goalCheckResult') {
-					goalCheckResult = '✗ Goal not found';
-				} else {
-					observationGoalCheckResult = '✗ Goal not found';
-				}
-			}
-		} catch {
-			if (resultVar === 'goalCheckResult') {
-				goalCheckResult = '✗ Failed to check goal';
-			} else {
-				observationGoalCheckResult = '✗ Failed to check goal';
-			}
-		} finally {
-			if (resultVar === 'goalCheckResult') {
-				isCheckingGoal = false;
-			} else {
-				isCheckingObservationGoal = false;
-			}
-		}
-
-		const service = new BeeminderService(beeminderConfig);
-		try {
-			const goals = await service.getGoals();
-			const goal = goals.find((g) => g.slug === goalSlug);
-			if (goal) {
-				if (resultVar === 'goalCheckResult') {
-					goalCheckResult = `✓ Found goal "${goal.slug}"`;
-				} else {
-					observationGoalCheckResult = `✓ Found goal "${goal.slug}"`;
-				}
-			} else {
-				if (resultVar === 'goalCheckResult') {
-					goalCheckResult = '✗ Goal not found';
-				} else {
-					observationGoalCheckResult = '✗ Goal not found';
-				}
-			}
-		} catch {
-			if (resultVar === 'goalCheckResult') {
-				goalCheckResult = '✗ Failed to check goal';
-			} else {
-				observationGoalCheckResult = '✗ Failed to check goal';
-			}
-		}
-	}
 
 	async function saveSettings(e: Event) {
 		e.preventDefault();
@@ -296,37 +204,21 @@
 						</p>
 					</div>
 
-					<div>
-						<label
-							for="selected-goal"
-							class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-							>New Hypothesis Goal Slug</label
-						>
-						<div class="relative">
-							<BeeminderGoalInput
-								bind:value={beeminderConfig.hypothesisGoal}
-								{beeminderConfig}
-								label="New Hypothesis Goal Slug"
-								placeholder="your-goal-slug"
-								helpText="Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are created"
-							/>
-						</div>
-					</div>
+					<BeeminderGoalInput
+						bind:value={beeminderConfig.hypothesisGoal}
+						{beeminderConfig}
+						label="New Hypothesis Goal Slug"
+						placeholder="your-goal-slug"
+						helpText="Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are created"
+					/>
 
-					<div>
-						<label
-							for="observation-goal"
-							class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
-							>New Observation Goal Slug</label
-						>
-						<div class="relative">
-							<BeeminderGoalInput
-								bind:value={beeminderConfig.observationGoal}
-								{beeminderConfig}
-								placeholder="observation-goal-slug"
-								helpText="Enter the slug of the Beeminder goal to send datapoints to when new observations are added"
-							/>
-					</div>
+					<BeeminderGoalInput
+						bind:value={beeminderConfig.observationGoal}
+						{beeminderConfig}
+						label="New Observation Goal Slug"
+						placeholder="observation-goal-slug"
+						helpText="Enter the slug of the Beeminder goal to send datapoints to when new observations are added"
+					/>
 
 					<button
 						type="submit"
