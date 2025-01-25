@@ -92,7 +92,7 @@
 						</a>
 						<a
 							href="/hypotheses"
-							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2"
+							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
 						>
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -106,7 +106,7 @@
 						</a>
 						<a
 							href="/settings"
-							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2"
+							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
 						>
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -129,7 +129,7 @@
 					<div class="flex items-center gap-4">
 						<button
 							on:click={toggleDarkMode}
-							class="p-2 text-slate-600 hover:text-indigo-600 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+							class="p-2 text-slate-600 hover:text-indigo-600 rounded-md hover:bg-slate-100 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-slate-800 transition-colors"
 							title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 						>
 							{#if darkMode}

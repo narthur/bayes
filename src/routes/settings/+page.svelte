@@ -270,7 +270,7 @@
 							id="auth-token"
 							type="password"
 							bind:value={beeminderConfig.authToken}
-							class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+							class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-400"
 							placeholder="••••••••••••••••"
 						/>
 						<p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
@@ -278,7 +278,7 @@
 								href="https://www.beeminder.com/settings/account#account-permissions"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="text-indigo-600 hover:text-indigo-700">Beeminder account settings</a
+								class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">Beeminder account settings</a
 							>
 						</p>
 					</div>
@@ -292,7 +292,7 @@
 								type="text"
 								bind:value={beeminderConfig.hypothesisGoal}
 								oninput={debounce(() => checkGoal(beeminderConfig.hypothesisGoal, 'goalCheckResult'), 500)}
-								class="w-full p-3 pr-10 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+								class="w-full p-3 pr-10 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-400"
 								placeholder="your-goal-slug"
 							/>
 							<div class="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -367,7 +367,7 @@
 									() => checkGoal(beeminderConfig.observationGoal, 'observationGoalCheckResult'),
 									500
 								)}
-								class="w-full p-3 pr-10 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+								class="w-full p-3 pr-10 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-400"
 								placeholder="observation-goal-slug"
 							/>
 							<div class="absolute inset-y-0 right-0 flex items-center pr-3">
