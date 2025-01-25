@@ -1,3 +1,5 @@
+# Course Syllabus
+
 Lesson 1: Introduction to Bayesian Reasoning
 
 • Topics Covered: Overview of Bayesian thinking, comparison with frequentist approaches, introduction to probability theory basics.
