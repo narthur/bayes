@@ -17,6 +17,25 @@ export function deleteHypothesis(id: string): void {
   saveHypotheses(updatedHypotheses);
 }
 
+// Course progress storage
+const COURSE_PROGRESS_KEY = 'bayes-course-progress';
+
+export function saveCourseProgress(progress: CourseProgress): void {
+  localStorage.setItem(COURSE_PROGRESS_KEY, JSON.stringify(progress));
+}
+
+export function loadCourseProgress(): CourseProgress {
+  const stored = localStorage.getItem(COURSE_PROGRESS_KEY);
+  if (!stored) {
+    return {
+      currentLesson: 'introduction',
+      completedLessons: [],
+      lastVisited: Date.now()
+    };
+  }
+  return JSON.parse(stored);
+}
+
 export function duplicateHypothesis(id: string): string {
   const hypotheses = loadHypotheses();
   const original = hypotheses.find(h => h.id === id);

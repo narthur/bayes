@@ -50,6 +50,7 @@ A web application for applying Bayesian reasoning to everyday life. Track hypoth
 - Use TypeScript types consistently
 - Preserve whitespace in descriptions with `whitespace-pre-line`
 - For debounced functions, use `function debounce<T extends unknown[], R>(fn: (...args: T) => R, wait: number): (...args: T) => void` to properly type the arguments and return value
+- Use `<div></div>` instead of self-closing `<div />` for non-void HTML elements in Svelte
 
 ## URLs & References
 - [SvelteKit Documentation](https://kit.svelte.dev/)

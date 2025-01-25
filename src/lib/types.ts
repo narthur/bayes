@@ -53,3 +53,15 @@ export interface BeeminderDatapoint {
   comment?: string;
   requestid?: string;
 }
+
+export interface LessonProgress {
+  id: string;
+  completed: boolean;
+  lastVisited: number;
+}
+
+export interface CourseProgress {
+  currentLesson: string;
+  completedLessons: LessonProgress[];
+  lastVisited: number;
+}
