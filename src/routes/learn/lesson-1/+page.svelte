@@ -210,8 +210,9 @@
 				<p>Try your own numbers:</p>
 				<div class="space-y-4">
 					<div class="flex items-center gap-4">
-						<label>Prior probability:</label>
+						<label for="custom-prior">Prior probability:</label>
 						<input
+							id="custom-prior"
 							type="number"
 							min="0"
 							max="100"
@@ -222,8 +223,9 @@
 						/>
 					</div>
 					<div class="flex items-center gap-4">
-						<label>Likelihood if true:</label>
+						<label for="custom-likelihood-true">Likelihood if true:</label>
 						<input
+							id="custom-likelihood-true"
 							type="number"
 							min="0"
 							max="100"
@@ -234,8 +236,9 @@
 						/>
 					</div>
 					<div class="flex items-center gap-4">
-						<label>Likelihood if false:</label>
+						<label for="custom-likelihood-false">Likelihood if false:</label>
 						<input
+							id="custom-likelihood-false"
 							type="number"
 							min="0"
 							max="100"
