@@ -64,12 +64,12 @@
 	}
 </script>
 
-<main class=" bg-slate-50 py-8 px-4">
+<main class="bg-slate-50 dark:bg-slate-900 py-8 px-4">
 	<div class="max-w-4xl mx-auto">
 		<div class="mb-8 flex items-center justify-between">
 			<button
 				on:click={() => goto('/')}
-				class="text-indigo-600 hover:text-indigo-700 flex items-center gap-2"
+				class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 flex items-center gap-2"
 			>
 				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
@@ -89,7 +89,7 @@
 			</div>
 		</div>
 
-		<div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8 mb-8">
+		<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8 mb-8">
 			<div class="flex items-start justify-between mb-6">
 				<div class="flex-1 space-y-4">
 					<div class="relative group">
@@ -97,7 +97,7 @@
 							type="text"
 							bind:value={hypothesis.name}
 							on:change={saveChanges}
-							class="text-3xl font-serif text-slate-800 w-full bg-transparent hover:bg-slate-50 px-2 py-1 rounded -mx-2 focus:bg-white focus:ring-2 focus:ring-indigo-200 focus:outline-none"
+							class="text-3xl font-serif text-slate-800 dark:text-slate-100 w-full bg-transparent hover:bg-slate-50 dark:hover:bg-slate-700 px-2 py-1 rounded -mx-2 focus:bg-white dark:focus:bg-slate-600 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-500 focus:outline-none"
 						/>
 						<div
 							class="absolute right-0 top-1/2 -translate-y-1/2 hidden group-hover:block text-xs text-slate-400"
@@ -114,12 +114,12 @@
 									editingDescription = false;
 								}}
 								on:blur={() => (editingDescription = false)}
-								className="text-slate-600 w-full bg-white px-2 py-1 -mx-2 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
+								className="text-slate-600 dark:text-slate-300 w-full bg-white dark:bg-slate-700 px-2 py-1 -mx-2 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-500 focus:outline-none"
 								autofocus
 							/>
 						{:else}
 							<button
-								class="text-slate-600 w-full px-2 py-1 -mx-2 min-h-[28px] text-left"
+								class="text-slate-600 dark:text-slate-300 w-full px-2 py-1 -mx-2 min-h-[28px] text-left"
 								on:click={() => (editingDescription = true)}
 								type="button"
 							>
@@ -138,7 +138,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex items-center gap-4 text-sm text-slate-500">
+			<div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
 				<span>Started at {formatProbability(hypothesis.priorProbability)}</span>
 				<span>•</span>
 				<span
@@ -163,12 +163,12 @@
 
 		<!-- List of observations -->
 		{#if hypothesis.observations.length > 0}
-			<div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
+			<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8">
 				<div class="flex items-center justify-between mb-6">
-					<h2 class="text-2xl font-serif text-slate-700">Evidence Timeline</h2>
+					<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100">Evidence Timeline</h2>
 					<button
 						on:click={() => (showNewEvidenceModal = true)}
-						class="px-4 py-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-md transition-colors font-medium flex items-center gap-2 border border-emerald-200"
+						class="px-4 py-2 text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-md transition-colors font-medium flex items-center gap-2 border border-emerald-200 dark:border-emerald-700"
 					>
 						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
@@ -183,28 +183,28 @@
 				</div>
 				<div class="space-y-4">
 					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}<div
-							class="group p-6 bg-white rounded-lg border border-slate-200 hover:border-slate-300 transition-colors shadow-sm hover:shadow-md"
+							class="group p-6 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors shadow-sm hover:shadow-md"
 						>
 							{#if editingObservation?.id === observation.id}
 								<div
-									class="bg-slate-50/70 rounded-lg border border-slate-200 border-dashed p-4 space-y-3"
+									class="bg-slate-50/70 dark:bg-slate-800/70 rounded-lg border border-slate-200 dark:border-slate-700 border-dashed p-4 space-y-3"
 								>
 									<div>
 										<input
 											type="text"
 											bind:value={editingObservation.description}
-											class="w-full p-2 border border-slate-300 rounded-md"
+											class="w-full p-2 border border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md"
 											placeholder="What did you observe?"
 										/>
 									</div>
 									<div class="space-y-1">
 										<label
-											class="block text-sm font-medium text-slate-700"
+											class="block text-sm font-medium text-slate-700 dark:text-slate-300"
 											for="edit-observation-notes">Notes</label
 										>
 										<AutoResizeTextarea
 											bind:value={editingObservation.notes}
-											className="w-full p-2 border border-slate-300 rounded-md"
+											className="w-full p-2 border border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md"
 											placeholder="Add notes (supports markdown)..."
 										/>
 									</div>
@@ -251,7 +251,7 @@
 										<div class="flex gap-2">
 											<button
 												on:click={() => (editingObservation = null)}
-												class="px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-slate-900"
+												class="px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
 											>
 												Cancel
 											</button>
@@ -262,7 +262,7 @@
 													}
 													editingObservation = null;
 												}}
-												class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-700 shadow-sm"
+												class="px-3 py-1.5 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 shadow-sm"
 											>
 												Save
 											</button>
@@ -273,7 +273,7 @@
 								<div class="flex justify-between gap-4">
 									<div class="flex-1 space-y-4">
 										<div class="flex items-start justify-between gap-4">
-											<p class="text-slate-800 font-medium leading-snug">
+											<p class="text-slate-800 dark:text-slate-100 font-medium leading-snug">
 												{observation.description}
 											</p>
 											<div
@@ -285,7 +285,7 @@
 															...observation,
 															notes: observation.notes || ''
 														})}
-													class="p-1 text-slate-400 hover:text-indigo-600 transition-colors"
+													class="p-1 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
 													title="Edit observation"
 													aria-label="Edit observation"
 												>
@@ -309,7 +309,7 @@
 															deleteObservation(observation.id);
 														}
 													}}
-													class="p-1 text-slate-400 hover:text-red-600 transition-colors"
+													class="p-1 text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
 													title="Delete observation"
 													aria-label="Delete observation"
 												>
@@ -368,7 +368,7 @@
 
 										{#if observation.notes}
 											<div
-												class="prose prose-sm prose-slate max-w-none border-t border-slate-200 pt-4 mt-4"
+												class="prose prose-sm prose-slate dark:prose-invert max-w-none border-t border-slate-200 dark:border-slate-700 pt-4 mt-4"
 											>
 												<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 												{@html marked(observation.notes)}
