@@ -11,7 +11,6 @@
 	let checkResult = '';
 	let isChecking = false;
 
-	// Debounce function
 	function debounce<T extends unknown[], R>(
 		fn: (...args: T) => R,
 		wait: number
