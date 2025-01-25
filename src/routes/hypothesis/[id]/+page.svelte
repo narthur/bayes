@@ -6,21 +6,23 @@
 	import { calculatePosteriorProbability } from '$lib/bayes';
 	import { saveHypotheses, loadHypotheses } from '$lib/storage';
 	import { marked } from 'marked';
-	import { BeeminderService } from '$lib/beeminder';
 	import type { BeeminderConfig } from '$lib/types';
 
 	export let data: { hypothesis: Hypothesis };
-	let beeminderConfig: BeeminderConfig = {
-		username: '',
-		authToken: '',
-		hypothesisGoal: '',
-		observationGoal: ''
-	};
-
+	let beeminderConfig: BeeminderConfig;
 	let hypothesis = data.hypothesis;
+
+	onMount(() => {
+		const stored = localStorage.getItem('beeminder-config');
+		if (stored) {
+			beeminderConfig = JSON.parse(stored);
+		}
+	});
 
 	import NewEvidenceForm from '$lib/components/NewEvidenceForm.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import { onMount } from 'svelte';
+	import BeeminderGoalInput from '$lib/components/BeeminderGoalInput.svelte';
 
 	let showNewEvidenceModal = false;
 
@@ -89,7 +91,9 @@
 			</div>
 		</div>
 
-		<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8 mb-8">
+		<div
+			class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8 mb-8"
+		>
 			<div class="flex items-start justify-between mb-6">
 				<div class="flex-1 space-y-4">
 					<div class="relative group">
@@ -138,14 +142,30 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
-				<span>Started at {formatProbability(hypothesis.priorProbability)}</span>
-				<span>•</span>
-				<span
-					>{hypothesis.observations.length} observation{hypothesis.observations.length === 1
-						? ''
-						: 's'}</span
-				>
+			<div class="space-y-4">
+				<div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+					<span>Started at {formatProbability(hypothesis.priorProbability)}</span>
+					<span>•</span>
+					<span
+						>{hypothesis.observations.length} observation{hypothesis.observations.length === 1
+							? ''
+							: 's'}</span
+					>
+				</div>
+
+				{#if beeminderConfig?.username && beeminderConfig?.authToken}
+					<div class="flex items-center gap-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+						<div class="relative flex-1">
+							<BeeminderGoalInput
+								bind:value={hypothesis.beeminderGoal}
+								{beeminderConfig}
+								placeholder="Beeminder goal slug for this hypothesis"
+								helpText="Datapoints will be sent to this goal when evidence is added"
+								on:change={saveChanges}
+							/>
+						</div>
+					</div>
+				{/if}
 			</div>
 		</div>
 
@@ -163,7 +183,9 @@
 
 		<!-- List of observations -->
 		{#if hypothesis.observations.length > 0}
-			<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8">
+			<div
+				class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8"
+			>
 				<div class="flex items-center justify-between mb-6">
 					<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100">Evidence Timeline</h2>
 					<button

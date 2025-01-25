@@ -76,3 +76,6 @@ A web application for applying Bayesian reasoning to everyday life. Track hypoth
 - Configured in settings page with username, auth token, and goal slugs
 - Validates goal slugs before saving
 - Uses requestid to prevent duplicate datapoints (hypothesis.id or observation.id)
+- Supports per-hypothesis goals: each hypothesis can have its own Beeminder goal for tracking evidence
+- Global observation goal and hypothesis-specific goals can be used simultaneously
+- Use BeeminderGoalInput component for goal slug inputs with validation

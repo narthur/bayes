@@ -45,15 +45,28 @@
 			probabilityGivenFalse: 0.5
 		};
 
-		// Send datapoint to Beeminder if configured
-		if (beeminderConfig?.observationGoal) {
+		// Send datapoints to Beeminder if configured
+		if (beeminderConfig?.username && beeminderConfig?.authToken) {
 			try {
 				const service = new BeeminderService(beeminderConfig);
-				await service.createDatapoint(beeminderConfig.observationGoal, {
-					value: 1,
-					comment: `Added observation to "${hypothesis.name}": ${observation.description}`,
-					requestid: observation.id
-				});
+				
+				// Send to global observations goal if configured
+				if (beeminderConfig.observationGoal) {
+					await service.createDatapoint(beeminderConfig.observationGoal, {
+						value: 1,
+						comment: `Added observation to "${hypothesis.name}": ${observation.description}`,
+						requestid: observation.id
+					});
+				}
+				
+				// Send to hypothesis-specific goal if configured
+				if (hypothesis.beeminderGoal) {
+					await service.createDatapoint(hypothesis.beeminderGoal, {
+						value: 1,
+						comment: `Added observation: ${observation.description}`,
+						requestid: observation.id
+					});
+				}
 			} catch (error) {
 				console.error('Failed to send datapoint to Beeminder:', error);
 			}

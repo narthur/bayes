@@ -13,6 +13,7 @@ export interface Hypothesis {
   tags: Tag[];
   createdAt: number;
   updatedAt: number;
+  beeminderGoal?: string;
 }
 
 export interface Observation {
