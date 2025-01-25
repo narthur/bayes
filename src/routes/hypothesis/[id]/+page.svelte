@@ -64,7 +64,7 @@
 	}
 </script>
 
-<main class="min-h-screen bg-slate-50 py-8 px-4">
+<main class=" bg-slate-50 py-8 px-4">
 	<div class="max-w-4xl mx-auto">
 		<div class="mb-8 flex items-center justify-between">
 			<button
@@ -148,8 +148,6 @@
 				>
 			</div>
 		</div>
-
-
 
 		<Modal
 			open={showNewEvidenceModal}

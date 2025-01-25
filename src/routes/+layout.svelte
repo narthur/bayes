@@ -18,7 +18,7 @@
 			darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 		}
 		updateDarkMode(darkMode);
-		
+
 		// Load hypotheses
 		hypotheses = loadHypotheses();
 	});
@@ -63,7 +63,7 @@
 	}
 </script>
 
-<div class="min-h-screen flex flex-col">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
 	<nav class="bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800">
 		<div class="max-w-4xl mx-auto px-4">
 			<div class="flex items-center justify-between h-16">
@@ -158,91 +158,94 @@
 								bind:value={$searchQuery}
 								placeholder="Search hypotheses..."
 								class="w-64 px-4 py-2 pl-10 bg-white border border-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:placeholder-slate-400"
-						/>
-						<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-							<svg
-								class="w-5 h-5 text-slate-400"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-								/>
-							</svg>
-						</div>
+							/>
+							<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+								<svg
+									class="w-5 h-5 text-slate-400"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+									/>
+								</svg>
+							</div>
 
-						{#if $searchQuery.trim() && hypotheses}
-							<div
-								class="absolute right-0 mt-2 py-2 bg-white rounded-lg shadow-lg border border-slate-200 max-h-96 overflow-y-auto z-50 w-96"
-							>
-								{#if filteredHypotheses.length === 0}
-									<div class="px-4 py-2 text-sm text-slate-500">
-										No hypotheses match your search
-									</div>
-								{:else}
-									{#each filteredHypotheses as hypothesis}
-										<div>
-											<a
-												href="/hypothesis/{hypothesis.id}"
-												class="block px-4 py-2 hover:bg-slate-50 transition-colors"
-											>
-												<div class="text-sm font-medium text-slate-800">
-													{hypothesis.name}
-												</div>
-												{#if hypothesis.description}
-													<div class="text-xs text-slate-500 truncate mt-0.5">
-														{hypothesis.description}
+							{#if $searchQuery.trim() && hypotheses}
+								<div
+									class="absolute right-0 mt-2 py-2 bg-white rounded-lg shadow-lg border border-slate-200 max-h-96 overflow-y-auto z-50 w-96"
+								>
+									{#if filteredHypotheses.length === 0}
+										<div class="px-4 py-2 text-sm text-slate-500">
+											No hypotheses match your search
+										</div>
+									{:else}
+										{#each filteredHypotheses as hypothesis}
+											<div>
+												<a
+													href="/hypothesis/{hypothesis.id}"
+													class="block px-4 py-2 hover:bg-slate-50 transition-colors"
+												>
+													<div class="text-sm font-medium text-slate-800">
+														{hypothesis.name}
+													</div>
+													{#if hypothesis.description}
+														<div class="text-xs text-slate-500 truncate mt-0.5">
+															{hypothesis.description}
+														</div>
+													{/if}
+													<div class="flex items-center gap-3 mt-1 text-xs text-slate-400">
+														<span>{hypothesis.observations.length} observations</span>
+														<span>•</span>
+														<span
+															>Current: {formatProbability(
+																calculatePosteriorProbability(hypothesis)
+															)}</span
+														>
+													</div>
+												</a>
+												{#if hypothesis.observations.some((o) => o.description
+															.toLowerCase()
+															.includes($searchQuery.toLowerCase()) || (o.notes && o.notes
+																.toLowerCase()
+																.includes($searchQuery.toLowerCase())))}
+													<div class="border-t border-slate-100 mx-4">
+														{#each hypothesis.observations.filter((o) => o.description
+																	.toLowerCase()
+																	.includes($searchQuery.toLowerCase()) || (o.notes && o.notes
+																		.toLowerCase()
+																		.includes($searchQuery.toLowerCase()))) as observation}
+															<a
+																href="/hypothesis/{hypothesis.id}"
+																class="block py-2 px-4 hover:bg-slate-50 transition-colors"
+															>
+																<div class="text-xs text-slate-400 mb-0.5">
+																	Observation • {new Date(
+																		observation.timestamp
+																	).toLocaleDateString()}
+																</div>
+																<div class="text-sm text-slate-600">
+																	{observation.description}
+																</div>
+																{#if observation.notes}
+																	<div class="text-xs text-slate-500 truncate mt-0.5">
+																		{observation.notes}
+																	</div>
+																{/if}
+															</a>
+														{/each}
 													</div>
 												{/if}
-												<div class="flex items-center gap-3 mt-1 text-xs text-slate-400">
-													<span>{hypothesis.observations.length} observations</span>
-													<span>•</span>
-													<span
-														>Current: {formatProbability(
-															calculatePosteriorProbability(hypothesis)
-														)}</span
-													>
-												</div>
-											</a>
-											{#if hypothesis.observations.some((o) => o.description
-														.toLowerCase()
-														.includes($searchQuery.toLowerCase()) || (o.notes && o.notes
-															.toLowerCase()
-															.includes($searchQuery.toLowerCase())))}
-												<div class="border-t border-slate-100 mx-4">
-													{#each hypothesis.observations.filter((o) => o.description
-																.toLowerCase()
-																.includes($searchQuery.toLowerCase()) || (o.notes && o.notes
-																	.toLowerCase()
-																	.includes($searchQuery.toLowerCase()))) as observation}
-														<a
-															href="/hypothesis/{hypothesis.id}"
-															class="block py-2 px-4 hover:bg-slate-50 transition-colors"
-														>
-															<div class="text-xs text-slate-400 mb-0.5">
-																Observation • {new Date(observation.timestamp).toLocaleDateString()}
-															</div>
-															<div class="text-sm text-slate-600">
-																{observation.description}
-															</div>
-															{#if observation.notes}
-																<div class="text-xs text-slate-500 truncate mt-0.5">
-																	{observation.notes}
-																</div>
-															{/if}
-														</a>
-													{/each}
-												</div>
-											{/if}
-										</div>
-									{/each}
-								{/if}
-							</div>
-						{/if}
+											</div>
+										{/each}
+									{/if}
+								</div>
+							{/if}
+						</div>
 					</div>
 				</div>
 			</div>

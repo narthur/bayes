@@ -30,11 +30,13 @@
 	}
 </script>
 
-<main class="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 px-4">
+<main class=" bg-slate-50 dark:bg-slate-900 py-8 px-4">
 	<div class="max-w-4xl mx-auto">
 		<div class="mb-12">
 			<h1 class="text-4xl font-serif text-slate-800 dark:text-slate-100 mb-4">Your Hypotheses</h1>
-			<p class="text-slate-600 dark:text-slate-300">Track and update your beliefs based on evidence</p>
+			<p class="text-slate-600 dark:text-slate-300">
+				Track and update your beliefs based on evidence
+			</p>
 		</div>
 
 		<Modal
@@ -50,7 +52,9 @@
 		</Modal>
 
 		<!-- List of hypotheses -->
-		<div class="mb-12 p-8 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+		<div
+			class="mb-12 p-8 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700"
+		>
 			<div class="flex items-center justify-between mb-4">
 				<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100">All Hypotheses</h2>
 				<div class="flex items-center gap-4">
@@ -71,8 +75,12 @@
 				</div>
 			</div>
 			{#if hypotheses.length === 0}
-				<div class="text-center py-12 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
-					<p class="text-slate-600 dark:text-slate-300">No hypotheses yet. Create one above to get started!</p>
+				<div
+					class="text-center py-12 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700"
+				>
+					<p class="text-slate-600 dark:text-slate-300">
+						No hypotheses yet. Create one above to get started!
+					</p>
 				</div>
 			{:else}
 				<div class="space-y-3">
@@ -154,13 +162,17 @@
 										</div>
 										<div class="flex items-center gap-8 shrink-0">
 											<div class="text-center">
-												<div class="text-sm font-medium text-slate-500 dark:text-slate-400">Prior</div>
+												<div class="text-sm font-medium text-slate-500 dark:text-slate-400">
+													Prior
+												</div>
 												<div class="text-lg font-medium text-slate-700 dark:text-slate-200">
 													{formatProbability(hypothesis.priorProbability)}
 												</div>
 											</div>
 											<div class="text-center">
-												<div class="text-sm font-medium text-slate-500 dark:text-slate-400">Current</div>
+												<div class="text-sm font-medium text-slate-500 dark:text-slate-400">
+													Current
+												</div>
 												<div class="text-lg font-medium text-indigo-600 dark:text-indigo-400">
 													{formatProbability(calculatePosteriorProbability(hypothesis))}
 												</div>

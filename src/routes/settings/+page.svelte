@@ -118,7 +118,7 @@
 	}
 </script>
 
-<main class="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 px-4">
+<main class=" bg-slate-50 dark:bg-slate-900 py-8 px-4">
 	<div class="max-w-4xl mx-auto">
 		<div class="mb-8">
 			<h1 class="text-4xl font-serif text-slate-800 dark:text-slate-100 mb-4">Settings</h1>
@@ -126,7 +126,9 @@
 		</div>
 
 		<div class="space-y-8">
-			<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8">
+			<div
+				class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8"
+			>
 				<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100 mb-6">Data Management</h2>
 				<div class="flex flex-col gap-4">
 					<div>
@@ -208,7 +210,9 @@
 					</div>
 
 					<div class="border-t border-slate-200 pt-4">
-						<h3 class="text-lg font-medium text-slate-700 dark:text-slate-100 mb-2">Delete All Data</h3>
+						<h3 class="text-lg font-medium text-slate-700 dark:text-slate-100 mb-2">
+							Delete All Data
+						</h3>
 						<p class="text-slate-600 dark:text-slate-300 text-sm mb-4">
 							Delete all your hypotheses and settings. This action cannot be undone.
 						</p>
@@ -246,11 +250,17 @@
 				</div>
 			</div>
 
-			<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8">
-				<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100 mb-6">Beeminder Integration</h2>
+			<div
+				class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8"
+			>
+				<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100 mb-6">
+					Beeminder Integration
+				</h2>
 				<form onsubmit={saveSettings} class="space-y-6">
 					<div>
-						<label for="username" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
+						<label
+							for="username"
+							class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
 							>Beeminder Username</label
 						>
 						<input
@@ -263,7 +273,9 @@
 					</div>
 
 					<div>
-						<label for="auth-token" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
+						<label
+							for="auth-token"
+							class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
 							>Auth Token</label
 						>
 						<input
@@ -278,20 +290,27 @@
 								href="https://www.beeminder.com/settings/account#account-permissions"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">Beeminder account settings</a
+								class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+								>Beeminder account settings</a
 							>
 						</p>
 					</div>
 
 					<div>
-						<label for="selected-goal" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
+						<label
+							for="selected-goal"
+							class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
 							>New Hypothesis Goal Slug</label
 						>
-						<div class="relative">							<input
+						<div class="relative">
+							<input
 								id="hypothesis-goal"
 								type="text"
 								bind:value={beeminderConfig.hypothesisGoal}
-								oninput={debounce(() => checkGoal(beeminderConfig.hypothesisGoal, 'goalCheckResult'), 500)}
+								oninput={debounce(
+									() => checkGoal(beeminderConfig.hypothesisGoal, 'goalCheckResult'),
+									500
+								)}
 								class="w-full p-3 pr-10 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-400"
 								placeholder="your-goal-slug"
 							/>
@@ -355,7 +374,9 @@
 					</div>
 
 					<div>
-						<label for="observation-goal" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
+						<label
+							for="observation-goal"
+							class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
 							>New Observation Goal Slug</label
 						>
 						<div class="relative">
