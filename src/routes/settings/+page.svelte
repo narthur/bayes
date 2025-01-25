@@ -118,20 +118,20 @@
 	}
 </script>
 
-<main class="min-h-screen bg-slate-50 py-8 px-4">
+<main class="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 px-4">
 	<div class="max-w-4xl mx-auto">
 		<div class="mb-8">
-			<h1 class="text-4xl font-serif text-slate-800 mb-4">Settings</h1>
-			<p class="text-slate-600">Configure your preferences and integrations</p>
+			<h1 class="text-4xl font-serif text-slate-800 dark:text-slate-100 mb-4">Settings</h1>
+			<p class="text-slate-600 dark:text-slate-300">Configure your preferences and integrations</p>
 		</div>
 
 		<div class="space-y-8">
-			<div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
-				<h2 class="text-2xl font-serif text-slate-700 mb-6">Data Management</h2>
+			<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8">
+				<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100 mb-6">Data Management</h2>
 				<div class="flex flex-col gap-4">
 					<div>
-						<h3 class="text-lg font-medium text-slate-700 mb-2">Export Data</h3>
-						<p class="text-slate-600 text-sm mb-4">
+						<h3 class="text-lg font-medium text-slate-700 dark:text-slate-100 mb-2">Export Data</h3>
+						<p class="text-slate-600 dark:text-slate-300 text-sm mb-4">
 							Download your hypotheses and observations as a JSON file for backup or transfer.
 						</p>
 						<button
@@ -162,8 +162,8 @@
 					</div>
 
 					<div class="border-t border-slate-200 pt-4">
-						<h3 class="text-lg font-medium text-slate-700 mb-2">Import Data</h3>
-						<p class="text-slate-600 text-sm mb-4">
+						<h3 class="text-lg font-medium text-slate-700 dark:text-slate-100 mb-2">Import Data</h3>
+						<p class="text-slate-600 dark:text-slate-300 text-sm mb-4">
 							Import previously exported data. This will replace your current hypotheses.
 						</p>
 						<label
@@ -208,8 +208,8 @@
 					</div>
 
 					<div class="border-t border-slate-200 pt-4">
-						<h3 class="text-lg font-medium text-slate-700 mb-2">Delete All Data</h3>
-						<p class="text-slate-600 text-sm mb-4">
+						<h3 class="text-lg font-medium text-slate-700 dark:text-slate-100 mb-2">Delete All Data</h3>
+						<p class="text-slate-600 dark:text-slate-300 text-sm mb-4">
 							Delete all your hypotheses and settings. This action cannot be undone.
 						</p>
 						<button
@@ -246,24 +246,24 @@
 				</div>
 			</div>
 
-			<div class="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
-				<h2 class="text-2xl font-serif text-slate-700 mb-6">Beeminder Integration</h2>
+			<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8">
+				<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100 mb-6">Beeminder Integration</h2>
 				<form onsubmit={saveSettings} class="space-y-6">
 					<div>
-						<label for="username" class="block text-sm font-medium text-slate-700 mb-2"
+						<label for="username" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
 							>Beeminder Username</label
 						>
 						<input
 							id="username"
 							type="text"
 							bind:value={beeminderConfig.username}
-							class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
+							class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-400"
 							placeholder="your-username"
 						/>
 					</div>
 
 					<div>
-						<label for="auth-token" class="block text-sm font-medium text-slate-700 mb-2"
+						<label for="auth-token" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
 							>Auth Token</label
 						>
 						<input
@@ -273,7 +273,7 @@
 							class="w-full p-3 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all"
 							placeholder="••••••••••••••••"
 						/>
-						<p class="mt-2 text-sm text-slate-500">
+						<p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
 							Find your auth token in your <a
 								href="https://www.beeminder.com/settings/account#account-permissions"
 								target="_blank"
@@ -284,7 +284,7 @@
 					</div>
 
 					<div>
-						<label for="selected-goal" class="block text-sm font-medium text-slate-700 mb-2"
+						<label for="selected-goal" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
 							>New Hypothesis Goal Slug</label
 						>
 						<div class="relative">							<input
@@ -348,14 +348,14 @@
 								{/if}
 							</div>
 						</div>
-						<p class="mt-2 text-sm text-slate-500">
+						<p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
 							Enter the slug of the Beeminder goal to send datapoints to when new hypotheses are
 							created
 						</p>
 					</div>
 
 					<div>
-						<label for="observation-goal" class="block text-sm font-medium text-slate-700 mb-2"
+						<label for="observation-goal" class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2"
 							>New Observation Goal Slug</label
 						>
 						<div class="relative">
@@ -423,7 +423,7 @@
 								{/if}
 							</div>
 						</div>
-						<p class="mt-2 text-sm text-slate-500">
+						<p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
 							Enter the slug of the Beeminder goal to send datapoints to when new observations are
 							added
 						</p>
