@@ -32,8 +32,8 @@
 
 <main class=" bg-slate-50 dark:bg-slate-900 py-8 px-4">
 	<div class="max-w-4xl mx-auto">
-		<div class="mb-12">
-			<h1 class="text-4xl font-serif text-slate-800 dark:text-slate-100 mb-4">Your Hypotheses</h1>
+		<div class="mb-8 md:mb-12">
+			<h1 class="text-3xl md:text-4xl font-serif text-slate-800 dark:text-slate-100 mb-2 md:mb-4">Your Hypotheses</h1>
 			<p class="text-slate-600 dark:text-slate-300">
 				Track and update your beliefs based on evidence
 			</p>
@@ -52,27 +52,23 @@
 		</Modal>
 
 		<!-- List of hypotheses -->
-		<div
-			class="mb-12 p-8 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700"
-		>
-			<div class="flex items-center justify-between mb-4">
-				<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100">All Hypotheses</h2>
-				<div class="flex items-center gap-4">
-					<button
-						on:click={() => (showNewHypothesisModal = true)}
-						class="px-4 py-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-md transition-colors font-medium flex items-center gap-2 border border-indigo-200"
-					>
-						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 4v16m8-8H4"
-							/>
-						</svg>
-						Create New Hypothesis
-					</button>
-				</div>
+		<div class="mb-8 md:mb-12 p-4 md:p-8 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+			<div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+				<h2 class="text-xl md:text-2xl font-serif text-slate-700 dark:text-slate-100">All Hypotheses</h2>
+				<button
+					on:click={() => (showNewHypothesisModal = true)}
+					class="w-full md:w-auto px-4 py-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-md transition-colors font-medium flex items-center justify-center md:justify-start gap-2 border border-indigo-200"
+				>
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M12 4v16m8-8H4"
+						/>
+					</svg>
+					Create New Hypothesis
+				</button>
 			</div>
 			{#if hypotheses.length === 0}
 				<div
@@ -91,15 +87,15 @@
 								class="block bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-all hover:shadow-md hover:border-indigo-200 dark:hover:border-indigo-500"
 							>
 								<div class="p-6">
-									<div class="flex items-start justify-between gap-6">
+									<div class="flex flex-col md:flex-row md:items-start justify-between gap-4 md:gap-6">
 										<div class="flex-1 min-w-0">
 											<div class="flex items-center gap-3 mb-1">
 												<h3
-													class="text-xl font-medium text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate"
+													class="text-lg md:text-xl font-medium text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate"
 												>
 													{hypothesis.name}
 												</h3>
-												<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+												<div class="flex gap-1 md:opacity-0 md:group-hover:opacity-100 transition-all">
 													<button
 														class="p-1.5 text-slate-400 hover:text-indigo-600 transition-colors rounded-md hover:bg-slate-50"
 														aria-label="Duplicate hypothesis"
@@ -160,26 +156,26 @@
 												{hypothesis.description}
 											</p>
 										</div>
-										<div class="flex items-center gap-8 shrink-0">
-											<div class="text-center">
-												<div class="text-sm font-medium text-slate-500 dark:text-slate-400">
+										<div class="flex items-center gap-4 md:gap-8 shrink-0">
+											<div class="text-center flex-1 md:flex-none">
+												<div class="text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400">
 													Prior
 												</div>
-												<div class="text-lg font-medium text-slate-700 dark:text-slate-200">
+												<div class="text-base md:text-lg font-medium text-slate-700 dark:text-slate-200">
 													{formatProbability(hypothesis.priorProbability)}
 												</div>
 											</div>
-											<div class="text-center">
-												<div class="text-sm font-medium text-slate-500 dark:text-slate-400">
+											<div class="text-center flex-1 md:flex-none">
+												<div class="text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400">
 													Current
 												</div>
-												<div class="text-lg font-medium text-indigo-600 dark:text-indigo-400">
+												<div class="text-base md:text-lg font-medium text-indigo-600 dark:text-indigo-400">
 													{formatProbability(calculatePosteriorProbability(hypothesis))}
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="mt-4 flex items-center gap-6 text-sm">
+									<div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs md:text-sm">
 										<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
 											<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path
