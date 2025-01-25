@@ -25,7 +25,7 @@ A web application for applying Bayesian reasoning to everyday life. Track hypoth
 - Export/import data
 - Markdown support in observation notes
 - Duplicate hypotheses
-- Delete hypotheses
+- Archive/restore hypotheses (deletion only available for archived hypotheses)
 
 ## Style Guide
 - Use semantic HTML

@@ -15,7 +15,10 @@
 
 	let hypotheses: Hypothesis[] = [];
 	let beeminderConfig: BeeminderConfig;
+	let showArchived = false;
 	import { searchQuery } from '$lib';
+
+	$: filteredHypotheses = hypotheses.filter(h => h.archived === showArchived);
 
 	onMount(() => {
 		hypotheses = loadHypotheses();
@@ -54,10 +57,20 @@
 		<!-- List of hypotheses -->
 		<div class="mb-8 md:mb-12 p-4 md:p-8 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
 			<div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-				<h2 class="text-xl md:text-2xl font-serif text-slate-700 dark:text-slate-100">All Hypotheses</h2>
+				<div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+					<h2 class="text-xl md:text-2xl font-serif text-slate-700 dark:text-slate-100">
+						{showArchived ? 'Archived' : 'Active'} Hypotheses
+					</h2>
+					<button
+						on:click={() => (showArchived = !showArchived)}
+						class="text-sm text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-colors"
+					>
+						Show {showArchived ? 'active' : 'archived'}
+					</button>
+				</div>
 				<button
 					on:click={() => (showNewHypothesisModal = true)}
-					class="w-full md:w-auto px-4 py-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-md transition-colors font-medium flex items-center justify-center md:justify-start gap-2 border border-indigo-200"
+					class="w-full md:w-auto px-4 py-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-md transition-colors font-medium flex items-center justify-center md:justify-start gap-2 border border-indigo-200 dark:text-indigo-400 dark:hover:text-indigo-300 dark:hover:bg-slate-800 dark:border-indigo-900"
 				>
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -69,18 +82,19 @@
 					</svg>
 					Create New Hypothesis
 				</button>
-			</div>
-			{#if hypotheses.length === 0}
-				<div
-					class="text-center py-12 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700"
-				>
-					<p class="text-slate-600 dark:text-slate-300">
-						No hypotheses yet. Create one above to get started!
-					</p>
-				</div>
-			{:else}
-				<div class="space-y-3">
-					{#each hypotheses as hypothesis}
+			</div>					{#if filteredHypotheses.length === 0}
+						<div
+							class="text-center py-12 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700"
+						>
+							<p class="text-slate-600 dark:text-slate-300">
+								{showArchived
+									? 'No archived hypotheses.'
+									: 'No hypotheses yet. Create one above to get started!'}
+							</p>
+						</div>
+					{:else}
+						<div class="space-y-3">
+							{#each filteredHypotheses as hypothesis}
 						<div class="group relative">
 							<a
 								href="/hypothesis/{hypothesis.id}"
@@ -121,35 +135,58 @@
 														</svg>
 													</button>
 													<button
-														class="p-1.5 text-slate-400 hover:text-red-600 transition-colors rounded-md hover:bg-slate-50"
-														aria-label="Delete hypothesis"
+														class="p-1.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors rounded-md hover:bg-slate-50 dark:hover:bg-slate-800"
+														aria-label={hypothesis.archived ? "Restore hypothesis" : "Archive hypothesis"}
 														on:click|stopPropagation={(e) => {
 															e.preventDefault();
-															if (
-																confirm(
-																	'Are you sure you want to delete this hypothesis? This action cannot be undone.'
-																)
-															) {
-																deleteHypothesis(hypothesis.id);
-																hypotheses = hypotheses.filter((h) => h.id !== hypothesis.id);
-															}
+															hypothesis.archived = !hypothesis.archived;
+															hypothesis.updatedAt = Date.now();
+															saveHypotheses(hypotheses);
 														}}
-														title="Delete hypothesis"
+														title={hypothesis.archived ? "Restore hypothesis" : "Archive hypothesis"}
 													>
-														<svg
-															class="w-4 h-4"
-															fill="none"
-															stroke="currentColor"
-															viewBox="0 0 24 24"
-														>
-															<path
-																stroke-linecap="round"
-																stroke-linejoin="round"
-																stroke-width="2"
-																d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-															/>
-														</svg>
+														{#if hypothesis.archived}
+															<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+																<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+															</svg>
+														{:else}
+															<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+																<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+															</svg>
+														{/if}
 													</button>
+													{#if hypothesis.archived}
+														<button
+															class="p-1.5 text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors rounded-md hover:bg-slate-50 dark:hover:bg-slate-800"
+															aria-label="Delete hypothesis"
+															on:click|stopPropagation={(e) => {
+																e.preventDefault();
+																if (
+																	confirm(
+																		'Are you sure you want to permanently delete this hypothesis? This action cannot be undone.'
+																	)
+																) {
+																	deleteHypothesis(hypothesis.id);
+																	hypotheses = hypotheses.filter((h) => h.id !== hypothesis.id);
+																}
+															}}
+															title="Delete hypothesis permanently"
+														>
+															<svg
+																class="w-4 h-4"
+																fill="none"
+																stroke="currentColor"
+																viewBox="0 0 24 24"
+															>
+																<path
+																	stroke-linecap="round"
+																	stroke-linejoin="round"
+																	stroke-width="2"
+																	d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+																/>
+															</svg>
+														</button>
+													{/if}
 												</div>
 											</div>
 											<p class="text-slate-600 dark:text-slate-300 text-sm whitespace-pre-line">

@@ -14,6 +14,7 @@ export interface Hypothesis {
   createdAt: number;
   updatedAt: number;
   beeminderGoal?: string;
+  archived?: boolean;
 }
 
 export interface Observation {
