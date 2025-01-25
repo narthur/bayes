@@ -16,6 +16,7 @@ A web application for applying Bayesian reasoning to everyday life. Track hypoth
 - `/hypotheses`: Main list view of all hypotheses
 - `/hypothesis/[id]`: Individual hypothesis view with evidence
 - `/settings`: Configuration and data management
+- `/learn`: Educational content about Bayesian inference and how to use the tool
 
 ## Key Features
 - Create and manage hypotheses

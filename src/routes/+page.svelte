@@ -18,11 +18,10 @@
 					class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
 				>
 					Get Started
-				</button>
-				<a
-					href="#learn-more"
-					class="px-6 py-3 text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition-colors font-medium"
-				>
+				</button>					<a
+						href="/learn"
+						class="px-6 py-3 text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50 transition-colors font-medium dark:text-indigo-400 dark:border-indigo-500 dark:hover:bg-slate-800"
+					>
 					Learn More
 				</a>
 			</div>
