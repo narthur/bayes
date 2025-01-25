@@ -21,6 +21,12 @@
 			title: "Bayes' Theorem",
 			description: 'Learn how to use Bayes\' theorem to update probabilities with new evidence.',
 			duration: '15 minutes'
+		},
+		{
+			id: 'lesson-3',
+			title: 'Prior and Posterior Distributions',
+			description: 'Understand different types of priors and how to update distributions with evidence.',
+			duration: '12 minutes'
 		}
 	];
 </script>
