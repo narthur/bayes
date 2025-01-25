@@ -77,7 +77,7 @@
 			<div class="mt-12 flex justify-center">
 				<a
 					href="/hypotheses"
-					class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+					class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium no-underline"
 				>
 					Start Using the Tool
 				</a>
