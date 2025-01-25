@@ -12,8 +12,14 @@
 	const lessons = [
 		{
 			id: 'lesson-1',
-			title: "Introduction & Bayes' Theorem",
-			description: 'Learn the fundamentals of Bayesian reasoning and how to apply Bayes\' theorem.',
+			title: 'Introduction to Bayesian Thinking',
+			description: 'Learn the fundamentals of Bayesian reasoning and how it differs from traditional statistics.',
+			duration: '10 minutes'
+		},
+		{
+			id: 'lesson-2',
+			title: "Bayes' Theorem",
+			description: 'Learn how to use Bayes\' theorem to update probabilities with new evidence.',
 			duration: '15 minutes'
 		}
 	];
