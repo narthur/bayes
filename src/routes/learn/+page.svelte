@@ -31,15 +31,20 @@
 		<h1 class="text-4xl font-serif text-slate-800 dark:text-slate-100 mb-8">Learn Bayesian Reasoning</h1>
 
 		<div class="space-y-8">
-			{#each lessons as lesson}
+			{#each lessons as lesson, index}
 				<div
 					class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6"
 				>
 					<div class="flex items-start justify-between gap-4">
 						<div>
-							<h2 class="text-xl font-serif text-slate-800 dark:text-slate-100 mb-2">
-								{lesson.title}
-							</h2>
+							<div class="flex items-center gap-3">
+								<span class="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+									Lesson {index + 1}
+								</span>
+								<h2 class="text-xl font-serif text-slate-800 dark:text-slate-100">
+									{lesson.title}
+								</h2>
+							</div>
 							<p class="text-slate-600 dark:text-slate-300 mb-4">{lesson.description}</p>
 							<div class="flex items-center gap-4 text-sm">
 								<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
