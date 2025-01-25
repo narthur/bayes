@@ -11,18 +11,10 @@
 
 	const lessons = [
 		{
-			id: 'introduction',
-			title: 'Introduction to Bayesian Reasoning',
-			description:
-				'Learn the fundamental concepts of Bayesian reasoning and how it helps us think better.',
-			duration: '5 minutes'
-		},
-		{
 			id: 'lesson-1',
-			title: "Bayes' Theorem",
-			description: 'Understanding the mathematical foundation of Bayesian reasoning.',
-			duration: '10 minutes',
-			comingSoon: true
+			title: "Introduction & Bayes' Theorem",
+			description: 'Learn the fundamentals of Bayesian reasoning and how to apply Bayes\' theorem.',
+			duration: '15 minutes'
 		}
 	];
 </script>
