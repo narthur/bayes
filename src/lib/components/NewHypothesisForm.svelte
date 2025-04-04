@@ -2,12 +2,10 @@
 	import { BeeminderService } from '$lib/beeminder';
 	import type { BeeminderConfig, Hypothesis } from '$lib/types';
 	import { saveHypotheses } from '$lib/storage';
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
 
 	export let hypotheses: Hypothesis[];
 	export let beeminderConfig: BeeminderConfig;
+	export let onHypothesisCreated: () => void;
 
 	let newHypothesis = {
 		name: '',
@@ -46,7 +44,7 @@
 			} catch (error) {
 				console.error('Failed to send datapoint to Beeminder:', error);
 			}
-			dispatch('hypothesisCreated');
+			onHypothesisCreated();
 		}
 	}
 

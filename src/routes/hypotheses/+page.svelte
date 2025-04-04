@@ -51,7 +51,7 @@
 			<NewHypothesisForm
 				{hypotheses}
 				{beeminderConfig}
-				on:hypothesisCreated={() => (showNewHypothesisModal = false)}
+				onHypothesisCreated={() => (showNewHypothesisModal = false)}
 			/>
 		</Modal>
 
@@ -204,7 +204,7 @@
 																	stroke-linecap="round"
 																	stroke-linejoin="round"
 																	stroke-width="2"
-																	d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+																	d="M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
 																/>
 															</svg>
 														{/if}
