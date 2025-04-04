@@ -64,6 +64,16 @@
 	}
 </script>
 
+<svelte:head>
+	{#if import.meta.env.MODE !== 'production'}
+		<script
+			data-recording-token="6ZMbdO8sw0mvWCSdemXofdHI3JvEZszkDsKeETI0"
+			data-is-production-environment="false"
+			src="https://snippet.meticulous.ai/v1/meticulous.js"
+		></script>
+	{/if}
+</svelte:head>
+
 <div class="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
 	<nav class="bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800">
 		<div class="max-w-4xl mx-auto px-4">
@@ -102,75 +112,75 @@
 
 				<!-- Desktop navigation -->
 				<div class="hidden md:flex items-center gap-6">
-						<a
-							href="/"
-							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
-						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-								/>
-							</svg>
-							<span>Home</span>
-						</a>
-						<a
-							href="/hypotheses"
-							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
-						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-								/>
-							</svg>
-							<span>Hypotheses</span>
-						</a>
-						<a
-							href="/learn"
-							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
-						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-								/>
-							</svg>
-							<span>Learn</span>
-						</a>
-						<a
-							href="/settings"
-							class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
-						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-								/>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-								/>
-							</svg>
-							<span>Settings</span>
-						</a>
-					</div>
-
-
+					<a
+						href="/"
+						class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
+					>
+						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+							/>
+						</svg>
+						<span>Home</span>
+					</a>
+					<a
+						href="/hypotheses"
+						class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
+					>
+						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+							/>
+						</svg>
+						<span>Hypotheses</span>
+					</a>
+					<a
+						href="/learn"
+						class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
+					>
+						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+							/>
+						</svg>
+						<span>Learn</span>
+					</a>
+					<a
+						href="/settings"
+						class="text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-2 dark:text-slate-400 dark:hover:text-indigo-400"
+					>
+						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+							/>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+							/>
+						</svg>
+						<span>Settings</span>
+					</a>
+				</div>
 
 				<!-- Mobile navigation -->
 				{#if mobileMenuOpen}
-					<div class="absolute top-16 left-0 right-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 md:hidden">
+					<div
+						class="absolute top-16 left-0 right-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 md:hidden"
+					>
 						<div class="flex flex-col p-4 space-y-4">
 							<a
 								href="/"
@@ -266,103 +276,101 @@
 						{/if}
 					</button>
 					<div class="relative hidden md:block">
-							<input
-								type="search"
-								bind:value={$searchQuery}
-								placeholder="Search hypotheses..."
-								class="w-64 px-4 py-2 pl-10 bg-white border border-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:placeholder-slate-400"
-							/>
-							<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-								<svg
-									class="w-5 h-5 text-slate-400"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-									/>
-								</svg>
-							</div>
+						<input
+							type="search"
+							bind:value={$searchQuery}
+							placeholder="Search hypotheses..."
+							class="w-64 px-4 py-2 pl-10 bg-white border border-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:placeholder-slate-400"
+						/>
+						<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+							<svg
+								class="w-5 h-5 text-slate-400"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								/>
+							</svg>
+						</div>
 
-							{#if $searchQuery.trim() && hypotheses}
-								<div
-									class="absolute right-0 mt-2 py-2 bg-white rounded-lg shadow-lg border border-slate-200 max-h-96 overflow-y-auto z-50 w-96"
-								>
-									{#if filteredHypotheses.length === 0}
-										<div class="px-4 py-2 text-sm text-slate-500">
-											No hypotheses match your search
-										</div>
-									{:else}
-										{#each filteredHypotheses as hypothesis}
-											<div>
-												<a
-													href="/hypothesis/{hypothesis.id}"
-													class="block px-4 py-2 hover:bg-slate-50 transition-colors"
-												>
-													<div class="text-sm font-medium text-slate-800">
-														{hypothesis.name}
-													</div>
-													{#if hypothesis.description}
-														<div class="text-xs text-slate-500 truncate mt-0.5">
-															{hypothesis.description}
-														</div>
-													{/if}
-													<div class="flex items-center gap-3 mt-1 text-xs text-slate-400">
-														<span>{hypothesis.observations.length} observations</span>
-														<span>•</span>
-														<span
-															>Current: {formatProbability(
-																calculatePosteriorProbability(hypothesis)
-															)}</span
-														>
-													</div>
-												</a>
-												{#if hypothesis.observations.some((o) => o.description
-															.toLowerCase()
-															.includes($searchQuery.toLowerCase()) || (o.notes && o.notes
-																.toLowerCase()
-																.includes($searchQuery.toLowerCase())))}
-													<div class="border-t border-slate-100 mx-4">
-														{#each hypothesis.observations.filter((o) => o.description
-																	.toLowerCase()
-																	.includes($searchQuery.toLowerCase()) || (o.notes && o.notes
-																		.toLowerCase()
-																		.includes($searchQuery.toLowerCase()))) as observation}
-															<a
-																href="/hypothesis/{hypothesis.id}"
-																class="block py-2 px-4 hover:bg-slate-50 transition-colors"
-															>
-																<div class="text-xs text-slate-400 mb-0.5">
-																	Observation • {new Date(
-																		observation.timestamp
-																	).toLocaleDateString()}
-																</div>
-																<div class="text-sm text-slate-600">
-																	{observation.description}
-																</div>
-																{#if observation.notes}
-																	<div class="text-xs text-slate-500 truncate mt-0.5">
-																		{observation.notes}
-																	</div>
-																{/if}
-															</a>
-														{/each}
+						{#if $searchQuery.trim() && hypotheses}
+							<div
+								class="absolute right-0 mt-2 py-2 bg-white rounded-lg shadow-lg border border-slate-200 max-h-96 overflow-y-auto z-50 w-96"
+							>
+								{#if filteredHypotheses.length === 0}
+									<div class="px-4 py-2 text-sm text-slate-500">
+										No hypotheses match your search
+									</div>
+								{:else}
+									{#each filteredHypotheses as hypothesis}
+										<div>
+											<a
+												href="/hypothesis/{hypothesis.id}"
+												class="block px-4 py-2 hover:bg-slate-50 transition-colors"
+											>
+												<div class="text-sm font-medium text-slate-800">
+													{hypothesis.name}
+												</div>
+												{#if hypothesis.description}
+													<div class="text-xs text-slate-500 truncate mt-0.5">
+														{hypothesis.description}
 													</div>
 												{/if}
-											</div>
-										{/each}
-									{/if}
-								</div>
-							{/if}
-						</div>
+												<div class="flex items-center gap-3 mt-1 text-xs text-slate-400">
+													<span>{hypothesis.observations.length} observations</span>
+													<span>•</span>
+													<span
+														>Current: {formatProbability(
+															calculatePosteriorProbability(hypothesis)
+														)}</span
+													>
+												</div>
+											</a>
+											{#if hypothesis.observations.some((o) => o.description
+														.toLowerCase()
+														.includes($searchQuery.toLowerCase()) || (o.notes && o.notes
+															.toLowerCase()
+															.includes($searchQuery.toLowerCase())))}
+												<div class="border-t border-slate-100 mx-4">
+													{#each hypothesis.observations.filter((o) => o.description
+																.toLowerCase()
+																.includes($searchQuery.toLowerCase()) || (o.notes && o.notes
+																	.toLowerCase()
+																	.includes($searchQuery.toLowerCase()))) as observation}
+														<a
+															href="/hypothesis/{hypothesis.id}"
+															class="block py-2 px-4 hover:bg-slate-50 transition-colors"
+														>
+															<div class="text-xs text-slate-400 mb-0.5">
+																Observation • {new Date(observation.timestamp).toLocaleDateString()}
+															</div>
+															<div class="text-sm text-slate-600">
+																{observation.description}
+															</div>
+															{#if observation.notes}
+																<div class="text-xs text-slate-500 truncate mt-0.5">
+																	{observation.notes}
+																</div>
+															{/if}
+														</a>
+													{/each}
+												</div>
+											{/if}
+										</div>
+									{/each}
+								{/if}
+							</div>
+						{/if}
 					</div>
 				</div>
 			</div>
-		</nav>
+		</div>
+	</nav>
 
 	<div class="flex-1">
 		<slot />
