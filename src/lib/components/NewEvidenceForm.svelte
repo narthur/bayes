@@ -4,12 +4,10 @@
 	import AutoResizeTextarea from './AutoResizeTextarea.svelte';
 	import type { Hypothesis, Observation } from '$lib/types';
 	import { saveHypotheses, loadHypotheses } from '$lib/storage';
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
 
 	export let hypothesis: Hypothesis;
 	export let beeminderConfig: BeeminderConfig;
+	export let onEvidenceAdded: () => void;
 
 	let newObservation = {
 		description: '',
@@ -49,7 +47,7 @@
 		if (beeminderConfig?.username && beeminderConfig?.authToken) {
 			try {
 				const service = new BeeminderService(beeminderConfig);
-				
+
 				// Send to global observations goal if configured
 				if (beeminderConfig.observationGoal) {
 					await service.createDatapoint(beeminderConfig.observationGoal, {
@@ -58,7 +56,7 @@
 						requestid: observation.id
 					});
 				}
-				
+
 				// Send to hypothesis-specific goal if configured
 				if (hypothesis.beeminderGoal) {
 					await service.createDatapoint(hypothesis.beeminderGoal, {
@@ -70,8 +68,10 @@
 			} catch (error) {
 				console.error('Failed to send datapoint to Beeminder:', error);
 			}
-			dispatch('evidenceAdded');
 		}
+		
+		// Always call onEvidenceAdded, not just when Beeminder is configured
+		onEvidenceAdded();
 	}
 
 	function formatProbability(prob: number): string {
@@ -126,12 +126,12 @@
 				<div class="mb-4 p-4 bg-indigo-50 rounded-md text-sm text-slate-700">
 					<p class="mb-2">These probabilities help us understand how strong the evidence is:</p>
 					<p class="mb-2">
-						<strong>P(E|H)</strong>: How likely would you be to see this evidence if your hypothesis is
-						true?
+						<strong>P(E|H)</strong>: How likely would you be to see this evidence if your hypothesis
+						is true?
 					</p>
 					<p class="mb-2">
-						<strong>P(E|¬H)</strong>: How likely would you be to see this evidence if your hypothesis is
-						false?
+						<strong>P(E|¬H)</strong>: How likely would you be to see this evidence if your
+						hypothesis is false?
 					</p>
 					<p>
 						The more these probabilities differ, the stronger the evidence is for or against your
@@ -158,14 +158,16 @@
 						class="w-full"
 					/>
 					{#if newObservation.probabilityGivenTrue === 0 || newObservation.probabilityGivenTrue === 1}
-						<div class="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-800">
+						<div
+							class="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-800"
+						>
 							<strong>Warning about extreme likelihood:</strong>
 							{#if newObservation.probabilityGivenTrue === 0}
-								Setting this to 0% means this evidence would be impossible if your hypothesis is true.
-								Finding this evidence would completely disprove your hypothesis.
+								Setting this to 0% means this evidence would be impossible if your hypothesis is
+								true. Finding this evidence would completely disprove your hypothesis.
 							{:else}
-								Setting this to 100% means this evidence would be guaranteed if your hypothesis is true.
-								Not finding this evidence would completely disprove your hypothesis.
+								Setting this to 100% means this evidence would be guaranteed if your hypothesis is
+								true. Not finding this evidence would completely disprove your hypothesis.
 							{/if}
 							Consider using a small value like 1% or 99% instead to account for uncertainty.
 						</div>
@@ -189,14 +191,16 @@
 						class="w-full"
 					/>
 					{#if newObservation.probabilityGivenFalse === 0 || newObservation.probabilityGivenFalse === 1}
-						<div class="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-800">
+						<div
+							class="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-800"
+						>
 							<strong>Warning about extreme likelihood:</strong>
 							{#if newObservation.probabilityGivenFalse === 0}
-								Setting this to 0% means this evidence would be impossible if your hypothesis is false.
-								Finding this evidence would completely prove your hypothesis.
+								Setting this to 0% means this evidence would be impossible if your hypothesis is
+								false. Finding this evidence would completely prove your hypothesis.
 							{:else}
-								Setting this to 100% means this evidence would be guaranteed if your hypothesis is false.
-								Not finding this evidence would completely prove your hypothesis.
+								Setting this to 100% means this evidence would be guaranteed if your hypothesis is
+								false. Not finding this evidence would completely prove your hypothesis.
 							{/if}
 							Consider using a small value like 1% or 99% instead to account for uncertainty.
 						</div>

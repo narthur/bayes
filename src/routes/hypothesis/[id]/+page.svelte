@@ -177,34 +177,44 @@
 			<NewEvidenceForm
 				{hypothesis}
 				{beeminderConfig}
-				on:evidenceAdded={() => (showNewEvidenceModal = false)}
+				onEvidenceAdded={() => {
+					// Reload the hypothesis data from storage
+					const hypotheses = loadHypotheses();
+					hypothesis = hypotheses.find(h => h.id === hypothesis.id) || hypothesis;
+					showNewEvidenceModal = false;
+				}}
 			/>
 		</Modal>
 
 		<!-- List of observations -->
-		{#if hypothesis.observations.length > 0}
-			<div
-				class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8"
-			>
-				<div class="flex items-center justify-between mb-6">
-					<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100">Evidence Timeline</h2>
-					<button
-						on:click={() => (showNewEvidenceModal = true)}
-						class="px-4 py-2 text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-md transition-colors font-medium flex items-center gap-2 border border-emerald-200 dark:border-emerald-700"
-					>
-						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 4v16m8-8H4"
-							/>
-						</svg>
-						Add New Evidence
-					</button>
+		<div
+			class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-8"
+		>
+			<div class="flex items-center justify-between mb-6">
+				<h2 class="text-2xl font-serif text-slate-700 dark:text-slate-100">Evidence Timeline</h2>
+				<button
+					on:click={() => (showNewEvidenceModal = true)}
+					class="px-4 py-2 text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-md transition-colors font-medium flex items-center gap-2 border border-emerald-200 dark:border-emerald-700"
+				>
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M12 4v16m8-8H4"
+						/>
+					</svg>
+					Add New Evidence
+				</button>
+			</div>
+			{#if hypothesis.observations.length === 0}
+				<div class="text-center py-12 text-slate-500 dark:text-slate-400">
+					No evidence recorded yet. Click the button above to add some!
 				</div>
+			{:else}
 				<div class="space-y-4">
-					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}<div
+					{#each hypothesis.observations.sort((a, b) => b.timestamp - a.timestamp) as observation}
+						<div
 							class="group p-6 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors shadow-sm hover:shadow-md"
 						>
 							{#if editingObservation?.id === observation.id}
@@ -345,7 +355,7 @@
 															stroke-linecap="round"
 															stroke-linejoin="round"
 															stroke-width="2"
-															d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+															d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
 														/>
 													</svg>
 												</button>
@@ -402,8 +412,8 @@
 						</div>
 					{/each}
 				</div>
-			</div>
-		{/if}
+			{/if}
+		</div>
 	</div>
 </main>
 

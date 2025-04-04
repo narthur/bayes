@@ -11,16 +11,26 @@
 	import NewHypothesisForm from '$lib/components/NewHypothesisForm.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import type { BeeminderConfig } from '$lib/types';
+	
 	let showNewHypothesisModal = false;
-
 	let hypotheses: Hypothesis[] = [];
 	let beeminderConfig: BeeminderConfig;
 	let showArchived = false;
 
+	$: {
+		console.log('All hypotheses:', hypotheses);
+		console.log('showArchived:', showArchived);
+		console.log('Filtered hypotheses:', hypotheses.filter((h) => h.archived === showArchived));
+	}
+
 	$: filteredHypotheses = hypotheses.filter((h) => h.archived === showArchived);
 
-	onMount(() => {
+	function refreshHypotheses() {
 		hypotheses = loadHypotheses();
+	}
+
+	onMount(() => {
+		refreshHypotheses();
 		const stored = localStorage.getItem('beeminder-config');
 		if (stored) {
 			beeminderConfig = JSON.parse(stored);
@@ -51,7 +61,10 @@
 			<NewHypothesisForm
 				{hypotheses}
 				{beeminderConfig}
-				on:hypothesisCreated={() => (showNewHypothesisModal = false)}
+				onHypothesisCreated={() => {
+					refreshHypotheses();
+					showNewHypothesisModal = false;
+				}}
 			/>
 		</Modal>
 
@@ -204,7 +217,7 @@
 																	stroke-linecap="round"
 																	stroke-linejoin="round"
 																	stroke-width="2"
-																	d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+																	d="M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
 																/>
 															</svg>
 														{/if}
@@ -297,7 +310,7 @@
 													stroke-linecap="round"
 													stroke-linejoin="round"
 													stroke-width="2"
-													d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+													d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 012-2M9 5a2 2 0 012 2"
 												/>
 											</svg>
 											<span
