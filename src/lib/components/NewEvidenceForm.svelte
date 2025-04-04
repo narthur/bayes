@@ -68,8 +68,10 @@
 			} catch (error) {
 				console.error('Failed to send datapoint to Beeminder:', error);
 			}
-			onEvidenceAdded();
 		}
+		
+		// Always call onEvidenceAdded, not just when Beeminder is configured
+		onEvidenceAdded();
 	}
 
 	function formatProbability(prob: number): string {
