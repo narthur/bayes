@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { BeeminderService } from '$lib/beeminder';
 	import type { BeeminderConfig, Hypothesis } from '$lib/types';
-	import { saveHypotheses } from '$lib/storage';
+	import { saveHypotheses, loadHypotheses } from '$lib/storage';
 
 	export let hypotheses: Hypothesis[];
 	export let beeminderConfig: BeeminderConfig;
@@ -25,11 +25,16 @@
 			observations: [],
 			tags: [],
 			createdAt: Date.now(),
-			updatedAt: Date.now()
+			updatedAt: Date.now(),
+			archived: false
 		};
 
-		hypotheses = [...hypotheses, hypothesis];
-		saveHypotheses(hypotheses);
+		// Load latest hypotheses to avoid overwriting other changes
+		const currentHypotheses = loadHypotheses();
+		const updatedHypotheses = [...currentHypotheses, hypothesis];
+		saveHypotheses(updatedHypotheses);
+		
+		// Reset form
 		newHypothesis = { name: '', description: '', priorProbability: 0.5 };
 
 		// Send datapoint to Beeminder if configured
@@ -44,8 +49,10 @@
 			} catch (error) {
 				console.error('Failed to send datapoint to Beeminder:', error);
 			}
-			onHypothesisCreated();
 		}
+		
+		// Always call onHypothesisCreated, not just when Beeminder is configured
+		onHypothesisCreated();
 	}
 
 	function formatProbability(prob: number): string {
@@ -143,7 +150,10 @@
 			</div>
 		</div>
 		<button
-			on:click={addHypothesis}
+			on:click|preventDefault={async () => {
+				console.log('Create button clicked');
+				await addHypothesis();
+			}}
 			disabled={!newHypothesis.name}
 			class="w-full py-3 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
 		>

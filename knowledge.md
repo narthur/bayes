@@ -87,3 +87,9 @@ A web application for applying Bayesian reasoning to everyday life. Track hypoth
 - Supports per-hypothesis goals: each hypothesis can have its own Beeminder goal for tracking evidence
 - Global observation goal and hypothesis-specific goals can be used simultaneously
 - Use BeeminderGoalInput component for goal slug inputs with validation
+
+## Data Models
+
+### Hypothesis
+
+When creating new hypotheses, always explicitly set `archived: false`. The UI filters hypotheses based on exact equality (`archived === showArchived`), so undefined values for `archived` will be filtered out of both archived and active views.

@@ -3,12 +3,28 @@ import type { Hypothesis } from './types';
 const STORAGE_KEY = 'bayes-hypotheses';
 
 export function saveHypotheses(hypotheses: Hypothesis[]): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(hypotheses));
+  console.log('Saving hypotheses:', hypotheses);
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(hypotheses));
+    // Verify save worked
+    const saved = localStorage.getItem(STORAGE_KEY);
+    console.log('Saved data:', saved);
+  } catch (error) {
+    console.error('Error saving hypotheses:', error);
+  }
 }
 
 export function loadHypotheses(): Hypothesis[] {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  return stored ? JSON.parse(stored) : [];
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    console.log('Loading hypotheses, raw data:', stored);
+    const hypotheses = stored ? JSON.parse(stored) : [];
+    console.log('Parsed hypotheses:', hypotheses);
+    return hypotheses;
+  } catch (error) {
+    console.error('Error loading hypotheses:', error);
+    return [];
+  }
 }
 
 export function deleteHypothesis(id: string): void {
