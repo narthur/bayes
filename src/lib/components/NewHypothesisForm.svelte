@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { BeeminderService } from '$lib/beeminder';
-	import type { BeeminderConfig } from '$lib/types';
+	import type { BeeminderConfig, Hypothesis } from '$lib/types';
 	import { saveHypotheses } from '$lib/storage';
 	import { createEventDispatcher } from 'svelte';
 
